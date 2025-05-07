@@ -1,77 +1,93 @@
 <!DOCTYPE html>
 <html lang="pt-BR" class="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Atacadão Dia a Dia</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            darkMode: false,
-            theme: {
-                extend: {
-                    colors: {
-                        atacadao: {
-                            blue: '#000B3A',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Banco Malvader</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            atacadao: {
+              blue: '#000B3A',
+            },
+          },
+        },
+      },
+    };
+  </script>
 </head>
-<body class="min-h-screen bg-gray-50">
-    <div class="flex min-h-screen">
-        
-        <div class="flex-1 flex items-center justify-center">
-            <div class="w-full max-w-md p-8">
-                <div class="text-center mb-8">
-                    <a href="" class="inline-block">
-                        <img src="banco de dados malvader.png" alt="Logo Atacadão Dia a Dia">
-                    </a>
-                    <h2 class="text-2xl font-bold text-gray-900">Bem-vindo(a) </h2>
-                    <p class="text-gray-600 mt-2">Faça login para acessar o Banco de dados</p>
-                </div>
+<body class="bg-atacadao-blue text-white min-h-screen">
+  <div class="flex min-h-screen items-center justify-center">
+    <div class="w-full max-w-md p-8 bg-white rounded-lg shadow-lg text-gray-900">
+      <div class="text-center mb-8">
+        <img src="banco de dados malvader.png" alt="Banco Malvader" class="mx-auto h-16 mb-2" />
+        <h2 class="text-2xl font-bold">Bem-vindo(a) ao Banco Malvader</h2>
+        <p class="text-gray-600 mt-1">Acesse o sistema com segurança</p>
+      </div>
 
-                <form class="space-y-6">
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" id="email" name="email" required 
-                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-atacadao-blue focus:border-atacadao-blue">
-                    </div>
+      <form class="space-y-5" id="login-form">
+        <!-- Email -->
+        <div class="relative">
+          <label for="email" class="block text-sm font-medium mb-1">Email</label>
+          <input type="email" id="email" name="email" required
+            class="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-atacadao-blue focus:border-atacadao-blue"
+            oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('Informe um email válido')" />
+          
+        </div>
 
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
-                        <input type="password" id="password" name="password" required 
-                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-atacadao-blue focus:border-atacadao-blue">
-                    </div>
+        <!-- Senha -->
+        <div class="relative">
+          <label for="password" class="block text-sm font-medium mb-1">Senha</label>
+          <input type="password" id="password" name="password" required
+            class="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-atacadao-blue focus:border-atacadao-blue"
+            oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('Digite sua senha')" />
+          
+        </div>
 
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <input type="checkbox" id="remember-me" name="remember-me" 
-                                   class="h-4 w-4 text-atacadao-blue focus:ring-atacadao-blue border-gray-300 rounded">
-                            <label for="remember-me" class="ml-2 block text-sm text-gray-700">Lembrar-me</label>
-                        </div>
-                        <a href="#" class="text-sm text-atacadao-blue hover:text-blue-700">Esqueceu a senha?</a>
-                    </div>
+        <!-- OTP -->
+        <div class="relative">
+          <label for="otp" class="block text-sm font-medium mb-1">Código OTP</label>
+          <input type="text" id="otp" name="otp" maxlength="6"
+            class="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-atacadao-blue focus:border-atacadao-blue"
+            oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('Informe o código OTP')" />
+          
+        </div>
 
-                    <button type="submit" 
-                            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-atacadao-blue hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-atacadao-blue">
-                        Entrar
-                    </button>
+        <!-- Lembrar-me e Esqueci -->
+        <div class="flex items-center justify-between text-sm">
+          <label class="flex items-center">
+            <input type="checkbox" class="h-4 w-4 text-atacadao-blue border-gray-300 rounded" />
+            <span class="ml-2">Lembrar-me</span>
+          </label>
+          <a href="#" class="text-atacadao-blue hover:text-blue-800 font-medium">Esqueceu a senha?</a>
+        </div>
 
-                    
+        <!-- Botão -->
+        <button type="submit"
+          class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-atacadao-blue hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-atacadao-blue transition-transform transform hover:scale-105">
+          Entrar
+        </button>
 
-      
+        <!-- Mensagem de status -->
+        <div id="status" class="text-sm text-red-600 mt-2 hidden text-center">Email ou senha inválidos</div>
+      </form>
+    </div>
+  </div>
 
-    <script>
-        // Simples redirecionamento após o submit do formulário (não funcional ainda)
-        document.querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            //vou implementar futuramente
-            alert('Funcionalidade de login será implementada em breve!');
-        });
-    </script>
+  <script>
+    // Simulação de login
+    document.getElementById("login-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const status = document.getElementById("status");
+      status.textContent = "Funcionalidade de login será implementada em breve!";
+      status.classList.remove("hidden");
+    });
+  </script>
 </body>
-</html> 
+</html>
+
