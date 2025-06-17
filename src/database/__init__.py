@@ -1,3 +1,3 @@
 """
-Pacote de conexão com banco de dadosssss
+Pacote de conexão com banco de dadossssssss
 """
