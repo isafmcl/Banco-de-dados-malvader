@@ -6,7 +6,7 @@ from src.services.account_service import get_account_service
 from src.utils.statistics import get_statistics_service
 
 app = Flask(__name__)
-CORS(app, origins=['http://127.0.0.1:5503', 'http://localhost:5503', 'http://127.0.0.1:5000', 'http://localhost:5000'])
+CORS(app, origins=['http://127.0.0.1:5504', 'http://localhost:5504', 'http://127.0.0.1:5000', 'http://localhost:5000', '*'])
 
 def error_response(message, status=500):
     """Retorna uma resposta de erro padronizada"""
@@ -144,6 +144,45 @@ def consultar_otp(cpf):
 @app.route('/teste')
 def teste():
     return jsonify({"message": "API funcionando", "status": "ok"})
+
+@app.route('/consultar-cliente/<cpf>', methods=['GET'])
+def consultar_cliente(cpf):
+    """Endpoint para consultar informações de um cliente"""
+    try:
+        cliente = get_account_service().consultar_cliente(cpf)
+        if not cliente:
+            return error_response('Cliente não encontrado', 404)
+        return jsonify(cliente)
+    except Exception as e:
+        return error_response(f'Erro ao consultar cliente: {str(e)}')
+
+@app.route('/consultar-transacoes/<numero_conta>', methods=['GET'])
+def consultar_transacoes(numero_conta):
+    """Endpoint para consultar transações de uma conta"""
+    try:
+        transacoes = get_financial_service().consultar_transacoes(numero_conta)
+        return jsonify(transacoes)
+    except Exception as e:
+        return error_response(f'Erro ao consultar transações: {str(e)}')
+
+@app.route('/clientes-inadimplentes', methods=['GET'])
+def consultar_inadimplentes():
+    """Endpoint para consultar clientes inadimplentes"""
+    try:
+        inadimplentes = get_financial_service().consultar_inadimplentes()
+        return jsonify(inadimplentes)
+    except Exception as e:
+        return error_response(f'Erro ao consultar inadimplentes: {str(e)}')
+
+@app.route('/encerrar-conta', methods=['POST'])
+def encerrar_conta():
+    """Endpoint para encerrar conta de cliente"""
+    try:
+        dados = request.json
+        sucesso = get_account_service().encerrar_conta(dados['numero_conta'])
+        return jsonify({'success': sucesso})
+    except Exception as e:
+        return error_response(f'Erro ao encerrar conta: {str(e)}')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
