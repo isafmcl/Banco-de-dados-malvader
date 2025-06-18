@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clientes Inadimplentes - Banco Malvader</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #000B3A;
+    }
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body class="text-white">
+  <header class="bg-white py-4 px-6 mb-8 shadow-lg">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <div class="flex items-center space-x-4">
+        <a href="painel_funcionario.html" class="text-gray-600 hover:text-gray-800">
+          <i class="fas fa-arrow-left"></i> Voltar ao Painel
+        </a>
+        <img src="../assets/images/logo.png" alt="Logo malvader" class="h-12">
+      </div>
+      <div class="flex items-center space-x-6">
+        <div class="text-right">
+          <p class="text-sm text-gray-600">Funcionário</p>
+          <p class="font-semibold text-gray-900" id="nomeFuncionario">Carregando...</p>
+          <p class="text-xs text-gray-500" id="cargoFuncionario">Cargo...</p>
+        </div>
+        <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
+          <i class="fas fa-sign-out-alt mr-2"></i>Sair
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6">
+    <div class="glass-effect rounded-xl p-8">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-2xl font-bold">Clientes Inadimplentes</h2>
+        <div class="flex items-center space-x-4">
+          <div class="text-right">
+            <p class="text-sm opacity-70">Total de Inadimplentes</p>
+            <p class="text-2xl font-bold text-red-400" id="totalInadimplentes">0</p>
+          </div>
+          <div class="text-right">
+            <p class="text-sm opacity-70">Valor Total em Atraso</p>
+            <p class="text-2xl font-bold text-red-400" id="valorTotalAtraso">R$ 0,00</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-8">
+        <form id="filtroForm" class="flex gap-4">
+          <div class="flex-1">
+            <input type="text" id="termoPesquisa" placeholder="Buscar por nome, CPF ou número da conta..." 
+              class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-blue-500 focus:outline-none">
+          </div>
+          <select id="filtroAtraso" class="px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-blue-500 focus:outline-none">
+            <option value="">Todos os períodos</option>
+            <option value="30">Até 30 dias</option>
+            <option value="60">31-60 dias</option>
+            <option value="90">61-90 dias</option>
+            <option value="91">Mais de 90 dias</option>
+          </select>
+          <button type="submit" class="px-6 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 transition-colors">
+            <i class="fas fa-search mr-2"></i>Buscar
+          </button>
+        </form>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="text-left border-b border-white/10">
+              <th class="pb-3 px-4">Cliente</th>
+              <th class="pb-3 px-4">Valor em Atraso</th>
+              <th class="pb-3 px-4">Dias em Atraso</th>
+              <th class="pb-3 px-4">Última Atualização</th>
+              <th class="pb-3 px-4">Status</th>
+              <th class="pb-3 px-4">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaInadimplentes">
+            <!-- Os dados serão inseridos aqui via JavaScript -->
+          </tbody>
+        </table>
+
+        <div id="semResultados" class="hidden text-center py-8 text-gray-400">
+          <i class="fas fa-check-circle mb-2 text-2xl"></i>
+          <p>Nenhum cliente inadimplente encontrado</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Detalhes -->
+    <div id="modalDetalhes" class="fixed inset-0 bg-black/50 hidden items-center justify-center">
+      <div class="glass-effect rounded-xl p-8 max-w-2xl w-full mx-4">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-xl font-bold">Detalhes da Inadimplência</h3>
+          <button onclick="fecharModal()" class="text-gray-400 hover:text-white">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <p class="text-sm opacity-70">Cliente</p>
+            <p class="font-medium" id="modalNomeCliente">-</p>
+            <p class="text-xs opacity-70" id="modalCpfCliente">-</p>
+          </div>
+          <div>
+            <p class="text-sm opacity-70">Número da Conta</p>
+            <p class="font-medium" id="modalNumeroConta">-</p>
+          </div>
+          <div>
+            <p class="text-sm opacity-70">Valor Total em Atraso</p>
+            <p class="font-medium text-red-400" id="modalValorAtraso">-</p>
+          </div>
+          <div>
+            <p class="text-sm opacity-70">Dias em Atraso</p>
+            <p class="font-medium" id="modalDiasAtraso">-</p>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <h4 class="font-semibold mb-3">Histórico de Contatos</h4>
+          <div id="historicoContatos" class="space-y-3">
+            <!-- Histórico será inserido aqui -->
+          </div>
+        </div>
+
+        <form id="formNovoContato" class="mb-6">
+          <h4 class="font-semibold mb-3">Registrar Novo Contato</h4>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-2" for="tipoContato">Tipo de Contato</label>
+              <select id="tipoContato" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-blue-500 focus:outline-none">
+                <option value="telefone">Telefone</option>
+                <option value="email">Email</option>
+                <option value="carta">Carta</option>
+                <option value="presencial">Presencial</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2" for="observacoes">Observações</label>
+              <textarea id="observacoes" rows="3" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-blue-500 focus:outline-none"></textarea>
+            </div>
+          </div>
+        </form>
+
+        <div class="flex justify-end space-x-4">
+          <button onclick="fecharModal()" class="px-6 py-2 rounded-lg border border-white/20 hover:bg-white/10 transition-colors">
+            Fechar
+          </button>
+          <button onclick="registrarContato()" class="px-6 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 transition-colors">
+            Registrar Contato
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Carregar dados do funcionário logado
+      const funcionarioData = JSON.parse(localStorage.getItem('funcionarioData'));
+      if (funcionarioData) {
+        document.getElementById('nomeFuncionario').textContent = funcionarioData.nome;
+        document.getElementById('cargoFuncionario').textContent = funcionarioData.cargo;
+      }
+
+      // Carregar lista de inadimplentes
+      await carregarInadimplentes();
+
+      // Adicionar listeners aos filtros
+      document.getElementById('filtroForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        filtrarInadimplentes();
+      });
+    });
+
+    async function carregarInadimplentes() {
+      try {
+        const response = await fetch('/clientes-inadimplentes');
+        if (!response.ok) throw new Error('Erro ao carregar dados');
+        
+        const dados = await response.json();
+        inadimplentesData = dados; // Armazenar dados para filtragem
+        atualizarEstatisticas(dados);
+        preencherTabela(dados);
+      } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao carregar dados de inadimplentes');
+      }
+    }
+
+    function atualizarEstatisticas(dados) {
+      document.getElementById('totalInadimplentes').textContent = dados.length;
+      const valorTotal = dados.reduce((acc, curr) => acc + curr.valor_inadimplencia, 0);
+      document.getElementById('valorTotalAtraso').textContent = 
+        formatarMoeda(valorTotal);
+    }
+
+    function preencherTabela(dados) {
+      const tbody = document.getElementById('tabelaInadimplentes');
+      const semResultados = document.getElementById('semResultados');
+      
+      tbody.innerHTML = '';
+      
+      if (dados.length === 0) {
+        semResultados.classList.remove('hidden');
+        return;
+      }
+      
+      semResultados.classList.add('hidden');
+      
+      dados.forEach(cliente => {
+        const tr = document.createElement('tr');
+        tr.className = 'border-b border-white/10';
+        tr.innerHTML = `
+          <td class="py-4 px-4">
+            <div class="font-medium">${cliente.nome}</div>
+            <div class="text-sm text-gray-400">CPF: ${formatarCPF(cliente.cpf)}</div>
+            <div class="text-sm text-gray-400">Conta: ${cliente.numero_conta}</div>
+          </td>
+          <td class="py-4 px-4 text-red-400 font-medium">
+            ${formatarMoeda(cliente.valor_inadimplencia)}
+          </td>
+          <td class="py-4 px-4">
+            <div class="flex items-center">
+              <span class="font-medium">${cliente.dias_inadimplente}</span>
+              <span class="ml-1 text-sm text-gray-400">dias</span>
+            </div>
+          </td>
+          <td class="py-4 px-4">
+            <div class="text-sm text-gray-400">
+              <div>Saldo: ${formatarMoeda(cliente.saldo)}</div>
+              <div>Limite: ${formatarMoeda(cliente.limite)}</div>
+            </div>
+          </td>
+          <td class="py-4 px-4">
+            ${getStatusBadge(cliente.dias_inadimplente)}
+          </td>
+          <td class="py-4 px-4">
+            <button onclick="verDetalhes('${cliente.cpf}')" 
+              class="text-blue-500 hover:text-blue-400">
+              <i class="fas fa-search mr-1"></i>Detalhes
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function getStatusBadge(dias) {
+      let cor, texto;
+      if (dias <= 30) {
+        cor = 'bg-yellow-500/20 text-yellow-500';
+        texto = 'Atraso Recente';
+      } else if (dias <= 60) {
+        cor = 'bg-orange-500/20 text-orange-500';
+        texto = 'Atraso Moderado';
+      } else if (dias <= 90) {
+        cor = 'bg-red-500/20 text-red-500';
+        texto = 'Atraso Crítico';
+      } else {
+        cor = 'bg-red-900/20 text-red-700';
+        texto = 'Atraso Severo';
+      }
+      
+      return `<span class="px-2 py-1 rounded-full ${cor} text-xs">${texto}</span>`;
+    }
+
+    function filtrarInadimplentes() {
+      const termo = document.getElementById('termoPesquisa').value.toLowerCase();
+      const filtroAtraso = document.getElementById('filtroAtraso').value;
+      
+      let dadosFiltrados = inadimplentesData.filter(cliente => {
+        const matchTermo = !termo || 
+          cliente.nome.toLowerCase().includes(termo) ||
+          cliente.cpf.includes(termo) ||
+          cliente.numero_conta.includes(termo);
+          
+        const matchAtraso = !filtroAtraso ||
+          (filtroAtraso === '30' && cliente.dias_inadimplente <= 30) ||
+          (filtroAtraso === '60' && cliente.dias_inadimplente > 30 && cliente.dias_inadimplente <= 60) ||
+          (filtroAtraso === '90' && cliente.dias_inadimplente > 60 && cliente.dias_inadimplente <= 90) ||
+          (filtroAtraso === '91' && cliente.dias_inadimplente > 90);
+          
+        return matchTermo && matchAtraso;
+      });
+      
+      preencherTabela(dadosFiltrados);
+      atualizarEstatisticas(dadosFiltrados);
+    }
+
+    function verDetalhes(cpf) {
+      window.location.href = `funcionario_consultar.html?cpf=${cpf}`;
+    }
+
+    function formatarMoeda(valor) {
+      return valor.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      });
+    }
+
+    function formatarCPF(cpf) {
+      return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    }
+
+    let inadimplentesData = []; // Armazenar dados para filtragem
+
+    // Carregar dados do funcionário logado
+    window.addEventListener('load', function() {
+      const usuario = JSON.parse(localStorage.getItem('usuario'));
+      if (usuario) {
+        document.getElementById('nomeFuncionario').textContent = usuario.nome;
+        document.getElementById('cargoFuncionario').textContent = usuario.cargo || 'Funcionário';
+        carregarInadimplentes();
+      } else {
+        window.location.href = 'login.html';
+      }
+    });
+
+    // Variáveis globais para o modal
+    let clienteAtual = null;
+
+    // Carregar lista de inadimplentes
+    async function carregarInadimplentes(termo = '', diasAtraso = '') {
+      try {
+        const params = new URLSearchParams({ termo, dias_atraso: diasAtraso });
+        const response = await fetch(`http://127.0.0.1:5000/inadimplentes?${params}`);
+        const data = await response.json();
+
+        document.getElementById('totalInadimplentes').textContent = data.total || 0;
+        document.getElementById('valorTotalAtraso').textContent = 
+          new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
+          .format(data.valor_total || 0);
+
+        const tbody = document.getElementById('tabelaInadimplentes');
+        const semResultados = document.getElementById('semResultados');
+
+        tbody.innerHTML = '';
+
+        if (data.clientes && data.clientes.length > 0) {
+          semResultados.classList.add('hidden');
+          data.clientes.forEach(cliente => {
+            const tr = document.createElement('tr');
+            tr.className = 'border-b border-white/10 hover:bg-white/5';
+
+            // Determinar a classe de cor baseada nos dias em atraso
+            let statusClasse = '';
+            if (cliente.dias_atraso > 90) statusClasse = 'bg-red-500/20 text-red-400';
+            else if (cliente.dias_atraso > 60) statusClasse = 'bg-orange-500/20 text-orange-400';
+            else statusClasse = 'bg-yellow-500/20 text-yellow-400';
+
+            tr.innerHTML = `
+              <td class="py-3 px-4">
+                ${cliente.nome}<br>
+                <span class="text-xs opacity-70">${cliente.cpf}</span>
+              </td>
+              <td class="py-3 px-4 text-red-400">
+                ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cliente.valor_atraso)}
+              </td>
+              <td class="py-3 px-4">${cliente.dias_atraso} dias</td>
+              <td class="py-3 px-4">
+                ${new Date(cliente.ultima_atualizacao).toLocaleDateString('pt-BR')}
+              </td>
+              <td class="py-3 px-4">
+                <span class="px-2 py-1 rounded-full text-xs ${statusClasse}">
+                  ${cliente.status}
+                </span>
+              </td>
+              <td class="py-3 px-4">
+                <button onclick='verDetalhes(${JSON.stringify(cliente)})' class="text-blue-400 hover:text-blue-300">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+        } else {
+          semResultados.classList.remove('hidden');
+        }
+      } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao carregar lista de inadimplentes');
+      }
+    }
+
+    // Pesquisar inadimplentes
+    document.getElementById('filtroForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const termo = document.getElementById('termoPesquisa').value;
+      const diasAtraso = document.getElementById('filtroAtraso').value;
+      carregarInadimplentes(termo, diasAtraso);
+    });
+
+    // Funções do modal
+    function verDetalhes(cliente) {
+      clienteAtual = cliente;
+      
+      document.getElementById('modalNomeCliente').textContent = cliente.nome;
+      document.getElementById('modalCpfCliente').textContent = cliente.cpf;
+      document.getElementById('modalNumeroConta').textContent = cliente.numero_conta;
+      document.getElementById('modalValorAtraso').textContent = 
+        new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cliente.valor_atraso);
+      document.getElementById('modalDiasAtraso').textContent = `${cliente.dias_atraso} dias`;
+
+      carregarHistoricoContatos(cliente.cpf);
+
+      document.getElementById('modalDetalhes').classList.remove('hidden');
+      document.getElementById('modalDetalhes').classList.add('flex');
+    }
+
+    async function carregarHistoricoContatos(cpf) {
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/historico_contatos/${cpf}`);
+        const data = await response.json();
+
+        const historicoDiv = document.getElementById('historicoContatos');
+        historicoDiv.innerHTML = '';
+
+        if (data.contatos && data.contatos.length > 0) {
+          data.contatos.forEach(contato => {
+            const div = document.createElement('div');
+            div.className = 'p-3 rounded-lg bg-white/5';
+            
+            const data = new Date(contato.data);
+            div.innerHTML = `
+              <div class="flex justify-between items-start mb-2">
+                <div>
+                  <span class="text-sm font-medium">${contato.tipo}</span>
+                  <span class="text-xs opacity-70 ml-2">${data.toLocaleDateString('pt-BR')} ${data.toLocaleTimeString('pt-BR')}</span>
+                </div>
+                <span class="text-xs opacity-70">${contato.funcionario}</span>
+              </div>
+              <p class="text-sm">${contato.observacoes}</p>
+            `;
+            historicoDiv.appendChild(div);
+          });
+        } else {
+          historicoDiv.innerHTML = '<p class="text-sm opacity-70">Nenhum contato registrado</p>';
+        }
+      } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao carregar histórico de contatos');
+      }
+    }
+
+    async function registrarContato() {
+      if (!clienteAtual) return;
+
+      const tipo = document.getElementById('tipoContato').value;
+      const observacoes = document.getElementById('observacoes').value;
+
+      if (!observacoes.trim()) {
+        alert('Por favor, preencha as observações do contato');
+        return;
+      }
+
+      try {
+        const response = await fetch('http://127.0.0.1:5000/registrar_contato', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            cpf: clienteAtual.cpf,
+            tipo: tipo,
+            observacoes: observacoes
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          alert('Contato registrado com sucesso!');
+          document.getElementById('observacoes').value = '';
+          carregarHistoricoContatos(clienteAtual.cpf);
+        } else {
+          alert(data.message || 'Erro ao registrar contato');
+        }
+      } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao registrar contato');
+      }
+    }
+
+    function fecharModal() {
+      document.getElementById('modalDetalhes').classList.add('hidden');
+      document.getElementById('modalDetalhes').classList.remove('flex');
+      clienteAtual = null;
+    }
+
+    // Fechar modal ao clicar fora dele
+    document.getElementById('modalDetalhes').addEventListener('click', function(e) {
+      if (e.target === this) {
+        fecharModal();
+      }
+    });
+  </script>
+</body>
+</html>

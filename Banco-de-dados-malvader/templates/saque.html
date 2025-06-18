@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saque - Banco Malvader</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #000B3A;
+    }
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body class="text-white min-h-screen">
+  <header class="bg-white py-4 px-6 mb-8 shadow-lg">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <img src="../assets/images/logo.png" alt="Logo malvader" class="h-12">
+      <div class="flex items-center space-x-6">
+        <div class="text-right">
+          <p class="text-sm text-gray-600">Bem-vindo(a),</p>
+          <p class="font-semibold text-gray-900" id="nomeUsuario">Carregando...</p>
+        </div>
+        <a href="../templates/painel_cliente.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+          <i class="fas fa-arrow-left mr-2"></i>Voltar
+        </a>
+        <a href="../templates/Login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
+          <i class="fas fa-sign-out-alt mr-2"></i>Sair
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-6">
+    <div class="text-center mb-8">
+      <div class="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-arrow-up text-2xl text-white"></i>
+      </div>
+      <h1 class="text-3xl font-bold mb-2">Saque</h1>
+      <p class="text-gray-300">Retire fundos da sua conta com segurança</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Informações da Conta -->
+      <div class="glass-effect rounded-xl p-6">
+        <h3 class="text-xl font-semibold mb-4 flex items-center">
+          <i class="fas fa-wallet mr-3 text-blue-400"></i>
+          Saldo Disponível
+        </h3>
+        <div class="space-y-3">
+          <div class="flex justify-between">
+            <span class="text-gray-300">Nome:</span>
+            <span class="font-semibold" id="nomeCompleto">Carregando...</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-300">Conta:</span>
+            <span class="font-semibold" id="numeroConta">Carregando...</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-300">Saldo:</span>
+            <span class="font-semibold text-green-400" id="saldoAtual">R$ 0,00</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-300">Limite:</span>
+            <span class="font-semibold text-blue-400" id="limiteCredito">R$ 0,00</span>
+          </div>
+          <hr class="border-white/20">
+          <div class="flex justify-between">
+            <span class="text-gray-300">Total Disponível:</span>
+            <span class="font-semibold text-yellow-400" id="totalDisponivel">R$ 0,00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulário de Saque -->
+      <div class="glass-effect rounded-xl p-6">
+        <h3 class="text-xl font-semibold mb-4 flex items-center">
+          <i class="fas fa-money-bill-wave mr-3 text-red-400"></i>
+          Realizar Saque
+        </h3>
+        <form id="saqueForm" onsubmit="return realizarSaque(event)">
+          <div class="mb-6">
+            <label class="block text-sm font-medium mb-2" for="valor">Valor do Saque</label>
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">R$</span>
+              <input 
+                type="number" 
+                id="valor" 
+                name="valor" 
+                step="0.01" 
+                min="0.01" 
+                class="w-full pl-8 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500" 
+                placeholder="0,00" 
+                required
+              >
+            </div>
+            <p class="text-sm text-gray-400 mt-1">Valor mínimo: R$ 0,01</p>
+          </div>
+
+          <div class="mb-6">
+            <label class="block text-sm font-medium mb-2" for="descricao">Descrição (Opcional)</label>
+            <input 
+              type="text" 
+              id="descricao" 
+              name="descricao" 
+              maxlength="100"
+              class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500" 
+              placeholder="Ex: Saque para pagamento"
+            >
+          </div>
+
+          <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg transition-colors font-semibold">
+            <i class="fas fa-check mr-2"></i>Confirmar Saque
+          </button>
+    </form>
+      </div>
+    </div>
+
+    <!-- Informações de Segurança -->
+    <div class="glass-effect rounded-xl p-6 mt-8">
+      <h3 class="text-lg font-semibold mb-4 flex items-center">
+        <i class="fas fa-shield-alt mr-3 text-green-400"></i>
+        Informações de Segurança
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-300">
+        <div>
+          <p class="mb-2"><strong>• Limite diário:</strong> R$ 5.000,00</p>
+          <p class="mb-2"><strong>• Horário:</strong> 24 horas por dia</p>
+        </div>
+        <div>
+          <p class="mb-2"><strong>• Processamento:</strong> Imediato</p>
+          <p class="mb-2"><strong>• Segurança:</strong> Transação criptografada</p>
+        </div>
+    </div>
+  </div>
+  </main>
+
+  <script>
+    let usuario = null;
+
+    async function carregarDadosUsuario() {
+      usuario = JSON.parse(localStorage.getItem('usuario'));
+      
+      if (!usuario) {
+        alert('Sessão expirada. Faça login novamente.');
+        window.location.href = '../templates/Login.html';
+        return;
+      }
+
+      // Atualiza informações do usuário
+      document.getElementById('nomeUsuario').textContent = usuario.nome;
+      document.getElementById('nomeCompleto').textContent = usuario.nome;
+      document.getElementById('numeroConta').textContent = usuario.numero_conta;
+      
+      // Carrega saldo atualizado
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/saldo/${usuario.cpf}`);
+        const data = await response.json();
+        
+        if (data.saldo !== undefined) {
+          const saldo = data.saldo;
+          const limite = usuario.limite || 0;
+          const total = saldo + limite;
+          
+          document.getElementById('saldoAtual').textContent = `R$ ${saldo.toFixed(2).replace('.', ',')}`;
+          document.getElementById('limiteCredito').textContent = `R$ ${limite.toFixed(2).replace('.', ',')}`;
+          document.getElementById('totalDisponivel').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+        }
+      } catch (error) {
+        console.error('Erro ao carregar saldo:', error);
+      }
+    }
+
+    async function realizarSaque(event) {
+      event.preventDefault();
+      
+      const valor = parseFloat(document.getElementById('valor').value);
+      const descricao = document.getElementById('descricao').value || 'Saque via internet banking';
+      
+      if (!valor || valor <= 0) {
+        alert('Por favor, insira um valor válido.');
+        return false;
+      }
+
+      // Verifica limite diário
+      if (valor > 5000) {
+        alert('O valor máximo para saque é R$ 5.000,00 por dia.');
+        return false;
+      }
+
+      try {
+        const response = await fetch('http://127.0.0.1:5000/saque', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            numero_conta: usuario.numero_conta,
+            valor: valor,
+            descricao: descricao
+          })
+        });
+
+        const data = await response.json();
+        
+        if (data.success) {
+          alert(`Saque de R$ ${valor.toFixed(2).replace('.', ',')} realizado com sucesso!`);
+          
+          // Limpa o formulário
+          document.getElementById('saqueForm').reset();
+          
+          // Atualiza o saldo
+          await carregarDadosUsuario();
+        } else {
+          alert('Saldo insuficiente ou erro ao realizar saque.');
+        }
+      } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao conectar com o servidor. Tente novamente.');
+      }
+      
+      return false;
+    }
+
+    // Carrega dados quando a página abre
+    window.addEventListener('load', carregarDadosUsuario);
+  </script>
+</body>
+</html>

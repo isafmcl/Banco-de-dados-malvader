@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Transferência - Banco Malvader</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #000B3A;
+    }
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body class="text-white min-h-screen">
+  <header class="bg-white py-4 px-6 mb-8 shadow-lg">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <img src="../assets/images/logo.png" alt="Logo malvader" class="h-12">
+      <div class="flex items-center space-x-6">
+        <div class="text-right">
+          <p class="text-sm text-gray-600">Bem-vindo(a),</p>
+          <p class="font-semibold text-gray-900" id="nomeUsuario">Carregando...</p>
+        </div>
+        <a href="../templates/painel_cliente.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+          <i class="fas fa-arrow-left mr-2"></i>Voltar
+        </a>
+        <a href="../templates/Login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
+          <i class="fas fa-sign-out-alt mr-2"></i>Sair
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-6">
+    <div class="text-center mb-8">
+      <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-exchange-alt text-2xl text-white"></i>
+      </div>
+      <h1 class="text-3xl font-bold mb-2">Transferência</h1>
+      <p class="text-gray-300">Transfira dinheiro de forma rápida e segura</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Informações da Conta -->
+      <div class="glass-effect rounded-xl p-6">
+        <h3 class="text-xl font-semibold mb-4 flex items-center">
+          <i class="fas fa-wallet mr-3 text-blue-400"></i>
+          Sua Conta
+        </h3>
+        <div class="space-y-3">
+          <div class="flex justify-between">
+            <span class="text-gray-300">Nome:</span>
+            <span class="font-semibold" id="nomeCompleto">Carregando...</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-300">Conta:</span>
+            <span class="font-semibold" id="numeroConta">Carregando...</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-300">Saldo:</span>
+            <span class="font-semibold text-green-400" id="saldoAtual">R$ 0,00</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-300">Limite Disponível:</span>
+            <span class="font-semibold text-blue-400" id="limiteDisponivel">R$ 0,00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulário de Transferência -->
+      <div class="glass-effect rounded-xl p-6">
+        <h3 class="text-xl font-semibold mb-4 flex items-center">
+          <i class="fas fa-paper-plane mr-3 text-blue-400"></i>
+          Nova Transferência
+        </h3>
+        <form id="transferenciaForm" onsubmit="return realizarTransferencia(event)">
+          <div class="mb-4">
+            <label class="block text-sm font-medium mb-2" for="contaDestino">Conta de Destino</label>
+            <input 
+              type="text" 
+              id="contaDestino" 
+              name="contaDestino" 
+              class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+              placeholder="Ex: 123456-7" 
+              required
+            >
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-sm font-medium mb-2" for="valor">Valor da Transferência</label>
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">R$</span>
+              <input 
+                type="number" 
+                id="valor" 
+                name="valor" 
+                step="0.01" 
+                min="0.01" 
+                max="5000"
+                class="w-full pl-8 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                placeholder="0,00" 
+                required
+              >
+            </div>
+            <p class="text-sm text-gray-400 mt-1">Limite diário: R$ 5.000,00</p>
+          </div>
+
+          <div class="mb-6">
+            <label class="block text-sm font-medium mb-2" for="descricao">Descrição (Opcional)</label>
+            <input 
+              type="text" 
+              id="descricao" 
+              name="descricao" 
+              maxlength="100"
+              class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+              placeholder="Ex: Pagamento de serviços"
+            >
+          </div>
+
+          <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg transition-colors font-semibold">
+            <i class="fas fa-check mr-2"></i>Confirmar Transferência
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Transferências Recentes -->
+    <div class="glass-effect rounded-xl p-6 mt-8">
+      <h3 class="text-lg font-semibold mb-4 flex items-center">
+        <i class="fas fa-history mr-3 text-purple-400"></i>
+        Transferências Recentes
+      </h3>
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="border-b border-white/20">
+              <th class="text-left py-3">Data</th>
+              <th class="text-left py-3">Destino</th>
+              <th class="text-left py-3">Valor</th>
+              <th class="text-left py-3">Status</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaTransferencias">
+            <tr class="border-b border-white/10">
+              <td class="py-3">02/06/2025</td>
+              <td class="py-3">123457-8</td>
+              <td class="py-3">R$ 500,00</td>
+              <td class="py-3">
+                <span class="px-2 py-1 bg-green-500/20 text-green-400 rounded-full text-xs">Concluída</span>
+              </td>
+            </tr>
+            <tr class="border-b border-white/10">
+              <td class="py-3">01/06/2025</td>
+              <td class="py-3">123458-9</td>
+              <td class="py-3">R$ 250,00</td>
+              <td class="py-3">
+                <span class="px-2 py-1 bg-green-500/20 text-green-400 rounded-full text-xs">Concluída</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Informações Importantes -->
+    <div class="glass-effect rounded-xl p-6 mt-8">
+      <h3 class="text-lg font-semibold mb-4 flex items-center">
+        <i class="fas fa-shield-alt mr-3 text-green-400"></i>
+        Informações de Segurança
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-300">
+        <div>
+          <p class="mb-2"><strong>• Processamento:</strong> Imediato</p>
+          <p class="mb-2"><strong>• Limite diário:</strong> R$ 5.000,00</p>
+        </div>
+        <div>
+          <p class="mb-2"><strong>• Horário:</strong> 24 horas por dia</p>
+          <p class="mb-2"><strong>• Segurança:</strong> Criptografia SSL</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let usuario = null;
+
+    async function carregarDadosUsuario() {
+      usuario = JSON.parse(localStorage.getItem('usuario'));
+      
+      if (!usuario) {
+        alert('Sessão expirada. Faça login novamente.');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      // Atualiza informações do usuário
+      document.getElementById('nomeUsuario').textContent = usuario.nome;
+      document.getElementById('nomeCompleto').textContent = usuario.nome;
+      document.getElementById('numeroConta').textContent = usuario.numero_conta;
+      
+      // Carrega saldo atualizado
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/saldo/${usuario.cpf}`);
+        const data = await response.json();
+        
+        if (data.saldo !== undefined) {
+          const saldo = data.saldo;
+          const limite = usuario.limite || 0;
+          
+          document.getElementById('saldoAtual').textContent = `R$ ${saldo.toFixed(2).replace('.', ',')}`;
+          document.getElementById('limiteDisponivel').textContent = `R$ ${limite.toFixed(2).replace('.', ',')}`;
+        }
+      } catch (error) {
+        console.error('Erro ao carregar saldo:', error);
+      }
+    }
+
+    async function realizarTransferencia(event) {
+      event.preventDefault();
+      
+      const contaDestino = document.getElementById('contaDestino').value;
+      const valor = parseFloat(document.getElementById('valor').value);
+      const descricao = document.getElementById('descricao').value || 'Transferência via internet banking';
+      
+      if (!contaDestino || !valor || valor <= 0) {
+        alert('Por favor, preencha todos os campos obrigatórios.');
+        return false;
+      }
+
+      if (valor > 5000) {
+        alert('O valor máximo para transferência é R$ 5.000,00 por dia.');
+        return false;
+      }
+
+      if (contaDestino === usuario.numero_conta) {
+        alert('Você não pode transferir para a própria conta.');
+        return false;
+      }
+
+      try {
+        const response = await fetch('http://127.0.0.1:5000/transferencia', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            conta_origem: usuario.numero_conta,
+            conta_destino: contaDestino,
+            valor: valor,
+            descricao: descricao
+          })
+        });
+
+        const data = await response.json();
+        
+        if (data.success) {
+          alert(`Transferência de R$ ${valor.toFixed(2).replace('.', ',')} para a conta ${contaDestino} realizada com sucesso!`);
+          
+          // Limpa o formulário
+          document.getElementById('transferenciaForm').reset();
+          
+          // Atualiza o saldo
+          await carregarDadosUsuario();
+        } else {
+          alert(data.message || 'Erro ao realizar transferência. Verifique se a conta de destino existe.');
+        }
+      } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao conectar com o servidor. Tente novamente.');
+      }
+      
+      return false;
+    }
+
+    // Carrega dados quando a página abre
+    window.addEventListener('load', carregarDadosUsuario);
+  </script>
+</body>
+</html>

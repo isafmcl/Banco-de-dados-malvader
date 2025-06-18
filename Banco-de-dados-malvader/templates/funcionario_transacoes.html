@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Histórico de Transações - Banco Malvader</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #000B3A;
+    }
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body class="text-white">
+  <header class="bg-white py-4 px-6 mb-8 shadow-lg">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <div class="flex items-center space-x-4">
+        <a href="painel_funcionario.html" class="text-gray-600 hover:text-gray-800">
+          <i class="fas fa-arrow-left"></i> Voltar ao Painel
+        </a>
+        <img src="../assets/images/logo.png" alt="Logo malvader" class="h-12">
+      </div>
+      <div class="flex items-center space-x-6">
+        <div class="text-right">
+          <p class="text-sm text-gray-600">Funcionário</p>
+          <p class="font-semibold text-gray-900" id="nomeFuncionario">Carregando...</p>
+          <p class="text-xs text-gray-500" id="cargoFuncionario">Cargo...</p>
+        </div>
+        <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
+          <i class="fas fa-sign-out-alt mr-2"></i>Sair
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6">
+    <div class="glass-effect rounded-xl p-8">
+      <h2 class="text-2xl font-bold mb-6">Histórico de Transações</h2>
+      
+      <div class="mb-8">
+        <form id="filtroForm" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <label class="block text-sm font-medium mb-2" for="cpfCliente">CPF do Cliente</label>
+            <input type="text" id="cpfCliente" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-blue-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2" for="tipoTransacao">Tipo de Transação</label>
+            <select id="tipoTransacao" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-blue-500 focus:outline-none">
+              <option value="">Todas</option>
+              <option value="deposito">Depósito</option>
+              <option value="saque">Saque</option>
+              <option value="transferencia">Transferência</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2" for="dataInicio">Data Início</label>
+            <input type="date" id="dataInicio" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-blue-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2" for="dataFim">Data Fim</label>
+            <input type="date" id="dataFim" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-blue-500 focus:outline-none">
+          </div>
+        </form>
+        <div class="flex justify-end mt-4">
+          <button onclick="buscarTransacoes()" class="px-6 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 transition-colors">
+            <i class="fas fa-search mr-2"></i>Buscar
+          </button>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="text-left border-b border-white/10">
+              <th class="pb-3 px-4">Data/Hora</th>
+              <th class="pb-3 px-4">Cliente</th>
+              <th class="pb-3 px-4">Tipo</th>
+              <th class="pb-3 px-4">Valor</th>
+              <th class="pb-3 px-4">Saldo Anterior</th>
+              <th class="pb-3 px-4">Saldo Final</th>
+              <th class="pb-3 px-4">Status</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaTransacoes">
+            <!-- Os dados serão inseridos aqui via JavaScript -->
+          </tbody>
+        </table>
+
+        <div id="semResultados" class="hidden text-center py-8 text-gray-400">
+          <i class="fas fa-receipt mb-2 text-2xl"></i>
+          <p>Nenhuma transação encontrada</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Carregar dados do funcionário logado
+    window.addEventListener('load', function() {
+      const usuario = JSON.parse(localStorage.getItem('usuario'));
+      if (usuario) {
+        document.getElementById('nomeFuncionario').textContent = usuario.nome;
+        document.getElementById('cargoFuncionario').textContent = usuario.cargo || 'Funcionário';
+        buscarTransacoes();
+      } else {
+        window.location.href = '../templates/Login.html';
+      }
+    });
+
+    // Buscar transações
+    async function buscarTransacoes() {
+      const cpf = document.getElementById('cpfCliente').value;
+      const tipo = document.getElementById('tipoTransacao').value;
+      const dataInicio = document.getElementById('dataInicio').value;
+      const dataFim = document.getElementById('dataFim').value;
+
+      try {
+        const params = new URLSearchParams({
+          cpf: cpf,
+          tipo: tipo,
+          data_inicio: dataInicio,
+          data_fim: dataFim
+        });
+
+        const response = await fetch(`http://127.0.0.1:5000/transacoes?${params}`);
+        const data = await response.json();
+
+        const tbody = document.getElementById('tabelaTransacoes');
+        const semResultados = document.getElementById('semResultados');
+
+        tbody.innerHTML = '';
+
+        if (data.transacoes && data.transacoes.length > 0) {
+          semResultados.classList.add('hidden');
+          data.transacoes.forEach(transacao => {
+            const tr = document.createElement('tr');
+            tr.className = 'border-b border-white/10 hover:bg-white/5';
+            
+            const data = new Date(transacao.data_hora);
+            const dataFormatada = data.toLocaleDateString('pt-BR');
+            const horaFormatada = data.toLocaleTimeString('pt-BR');
+
+            // Definir classe de cor baseada no tipo de transação
+            let tipoClasse = '';
+            switch(transacao.tipo.toLowerCase()) {
+              case 'deposito':
+                tipoClasse = 'text-green-400';
+                break;
+              case 'saque':
+                tipoClasse = 'text-red-400';
+                break;
+              case 'transferencia':
+                tipoClasse = 'text-blue-400';
+                break;
+            }
+
+            tr.innerHTML = `
+              <td class="py-3 px-4">${dataFormatada}<br><span class="text-xs opacity-70">${horaFormatada}</span></td>
+              <td class="py-3 px-4">
+                ${transacao.cliente_nome}<br>
+                <span class="text-xs opacity-70">${transacao.cliente_cpf}</span>
+              </td>
+              <td class="py-3 px-4 ${tipoClasse}">${transacao.tipo}</td>
+              <td class="py-3 px-4 ${tipoClasse}">
+                ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(transacao.valor)}
+              </td>
+              <td class="py-3 px-4">
+                ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(transacao.saldo_anterior)}
+              </td>
+              <td class="py-3 px-4">
+                ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(transacao.saldo_final)}
+              </td>
+              <td class="py-3 px-4">
+                <span class="px-2 py-1 rounded-full text-xs ${transacao.status === 'Concluída' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}">
+                  ${transacao.status}
+                </span>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+        } else {
+          semResultados.classList.remove('hidden');
+        }
+      } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao buscar transações');
+      }
+    }
+  </script>
+</body>
+</html>

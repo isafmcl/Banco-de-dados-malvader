@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Banco Malvader</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000B3A;
+        }
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-card {
+            max-width: 24rem;
+            width: 100%;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+        .login-logo {
+            height: 4rem;
+            margin: 0 auto 1rem auto;
+        }        .btn {
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1);
+        }
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background-color: #4b5563;
+            color: white;
+            box-shadow: 0 2px 4px rgba(75, 85, 99, 0.1);
+        }
+        .btn-secondary:hover {
+            background-color: #374151;
+            transform: translateY(-1px);
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-label {
+            display: block;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.25rem;
+            color: #111827;
+        }
+        .forgot-password {
+            display: block;
+            text-align: center;
+            color: #2563eb;
+            text-decoration: none;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+        }
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">            <div class="text-center mb-10">
+                <img src="../assets/images/logo.png" alt="Logo Malvader" class="login-logo">
+                <h2 class="text-2xl font-bold text-gray-900 mt-4">Login</h2>
+            </div><div class="flex justify-center gap-4 mb-6">
+                <button id="clienteBtn" class="btn btn-primary flex-1 max-w-[120px]">Cliente</button>
+                <button id="funcionarioBtn" class="btn btn-secondary flex-1 max-w-[120px]">Funcionário</button>
+            </div>
+
+            <form id="loginForm">
+                <input type="hidden" id="tipoUsuario" value="cliente">
+                
+                <div class="form-group">
+                    <label class="form-label" for="cpf">CPF</label>
+                    <input type="text" id="cpf" name="cpf" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" class="form-input" required>
+                </div>
+
+                <div id="otpContainer" class="form-group hidden">
+                    <label class="form-label" for="otp">Código OTP</label>
+                    <input type="text" id="otp" name="otp" class="form-input">
+                    <p class="help-text">Um código será enviado para seu email cadastrado</p>
+                </div>
+
+                <button type="submit" class="w-full btn btn-primary">
+                    Entrar
+                </button>
+            </form>
+
+            <a href="#" class="forgot-password">Esqueci minha senha</a>
+        </div>
+    </div>
+
+
+    <script src="../js/models/UsuarioModel.js"></script>
+    <script src="../js/views/LoginView.js"></script>
+    <script src="../js/controllers/LoginController.js"></script>
+    <script>
+        // Inicialização da aplicação
+        document.addEventListener('DOMContentLoaded', () => {
+            const model = new UsuarioModel();
+            const view = new LoginView();
+            const controller = new LoginController(model, view);
+        });
+    </script>
+</body>
+</html>

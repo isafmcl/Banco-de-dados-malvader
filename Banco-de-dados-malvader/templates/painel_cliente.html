@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Cliente - Banco Malvader</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #000B3A;
+    }
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body class="text-white">
+  <header class="bg-white py-4 px-6 mb-8 shadow-lg">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">        <img src="../assets/images/logo.png" alt="Logo malvader" class="h-12">
+      <div class="flex items-center space-x-6">
+        <div class="text-right">
+          <p class="text-sm text-gray-600">Bem-vindo(a),</p>
+          <p class="font-semibold text-gray-900">Leticia Zanolla</p>
+        </div>        <a href="../templates/Login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
+          <i class="fas fa-sign-out-alt mr-2"></i>Sair
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6">
+    <div class="mb-12">
+      <h2 class="text-3xl font-bold mb-2">Resumo da Conta</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="glass-effect rounded-xl p-6">
+          <p class="text-sm opacity-70 mb-1">Saldo Disponível</p>
+          <p class="text-3xl font-bold text-green-400" id="saldo">R$ 1.250,00</p>
+        </div>
+        <div class="glass-effect rounded-xl p-6">
+          <p class="text-sm opacity-70 mb-1">Limite de Crédito</p>
+          <p class="text-3xl font-bold text-blue-400">R$ 5.000,00</p>
+        </div>
+        <div class="glass-effect rounded-xl p-6">
+          <p class="text-sm opacity-70 mb-1">Investimentos</p>
+          <p class="text-3xl font-bold text-purple-400">R$ 10.000,00</p>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="text-2xl font-bold mb-6 text-center">Operações</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Depósito -->
+      <div class="glass-effect rounded-xl p-6 card-hover flex flex-col h-[250px]">
+        <div class="flex items-center justify-center mb-4">
+          <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+            <i class="fas fa-arrow-down text-xl"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-semibold text-center mb-2">Depósito</h3>
+        <p class="text-sm opacity-70 mb-4 text-center flex-grow">Faça depósitos em sua conta de forma simples e rápida.</p>
+        <a href="../templates/deposito.html" class="block w-full bg-green-500 text-white text-center py-3 rounded-lg hover:bg-green-600 transition-colors mt-auto">
+          Depositar
+        </a>
+      </div>
+
+      <!-- Saque -->
+      <div class="glass-effect rounded-xl p-6 card-hover flex flex-col h-[250px]">
+        <div class="flex items-center justify-center mb-4">
+          <div class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center">
+            <i class="fas fa-arrow-up text-xl"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-semibold text-center mb-2">Saque</h3>
+        <p class="text-sm opacity-70 mb-4 text-center flex-grow">Realize saques com segurança e praticidade.</p>
+        <a href="../templates/saque.html" class="block w-full bg-red-500 text-white text-center py-3 rounded-lg hover:bg-red-600 transition-colors mt-auto">
+          Sacar
+        </a>
+      </div>
+
+      <!-- Transferência -->
+      <div class="glass-effect rounded-xl p-6 card-hover flex flex-col h-[250px]">
+        <div class="flex items-center justify-center mb-4">
+          <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+            <i class="fas fa-exchange-alt text-xl"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-semibold text-center mb-2">Transferência</h3>
+        <p class="text-sm opacity-70 mb-4 text-center flex-grow">Transfira valores para outras contas com facilidade.</p>
+        <a href="../templates/transferencia.html" class="block w-full bg-blue-500 text-white text-center py-3 rounded-lg hover:bg-blue-600 transition-colors mt-auto">
+          Transferir
+        </a>
+      </div>
+
+      <!-- Extrato -->
+      <div class="glass-effect rounded-xl p-6 card-hover flex flex-col h-[250px]">
+        <div class="flex items-center justify-center mb-4">
+          <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
+            <i class="fas fa-list text-xl"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-semibold text-center mb-2">Extrato</h3>
+        <p class="text-sm opacity-70 mb-4 text-center flex-grow">Visualize seu histórico de transações.</p>        <a href="../templates/extrato.html" class="block w-full bg-purple-500 text-white text-center py-3 rounded-lg hover:bg-purple-600 transition-colors mt-auto">
+          Ver Extrato
+        </a>
+      </div>
+
+      <!-- Investimentos -->
+      <div class="glass-effect rounded-xl p-6 card-hover flex flex-col h-[250px]">
+        <div class="flex items-center justify-center mb-4">
+          <div class="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center">
+            <i class="fas fa-chart-line text-xl"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-semibold text-center mb-2">Investimentos</h3>
+        <p class="text-sm opacity-70 mb-4 text-center flex-grow">Acompanhe e gerencie seus investimentos.</p>        <a href="../templates/investimentos.html" class="block w-full bg-yellow-500 text-white text-center py-3 rounded-lg hover:bg-yellow-600 transition-colors mt-auto">
+          Investir
+        </a>
+      </div>
+
+      <!-- Configurações -->
+      <div class="glass-effect rounded-xl p-6 card-hover flex flex-col h-[250px]">
+        <div class="flex items-center justify-center mb-4">
+          <div class="w-12 h-12 bg-gray-500 rounded-full flex items-center justify-center">
+            <i class="fas fa-cog text-xl"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-semibold text-center mb-2">Configurações</h3>
+        <p class="text-sm opacity-70 mb-4 text-center flex-grow">Gerencie suas preferências e dados da conta.</p>        <a href="../templates/configuracoes.html" class="block w-full bg-gray-500 text-white text-center py-3 rounded-lg hover:bg-gray-600 transition-colors mt-auto">
+          Configurar
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+  async function carregarDados() {
+    const usuario = JSON.parse(localStorage.getItem('usuario'));
+    
+    if (!usuario) {
+      alert('Sessão expirada. Faça login novamente.');
+      window.location.href = '../templates/Login.html';
+      return;
+    }
+    
+    // Atualiza nome do cliente
+    const nomeElement = document.querySelector('.font-semibold.text-gray-900');
+    if (nomeElement) {
+        nomeElement.textContent = usuario.nome;
+    }
+    
+    // Atualiza limite de crédito
+    const limiteElement = document.querySelector('.text-blue-400');
+    if (limiteElement && usuario.limite) {
+        limiteElement.textContent = `R$ ${usuario.limite.toFixed(2).replace('.', ',')}`;
+    }
+    
+    // Busca saldo atualizado
+    try {
+        const response = await fetch(`http://127.0.0.1:5000/saldo/${usuario.cpf}`);
+        const data = await response.json();
+        
+        const saldoElement = document.getElementById('saldo');
+        if (saldoElement) {
+            saldoElement.textContent = `R$ ${data.saldo.toFixed(2).replace('.', ',')}`;
+        }
+    } catch (error) {
+        console.error('Erro ao carregar saldo:', error);
+    }
+  }
+
+  async function realizarDeposito() {
+    const valor = document.getElementById('valorDeposito').value;
+    const cliente = JSON.parse(localStorage.getItem('cliente'));
+    
+    try {
+      const response = await fetch('http://localhost:5000/deposito', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          numero_conta: cliente.numero_conta,
+          valor: valor
+        })
+      });
+      
+      const data = await response.json();
+      if (data.success) {
+        alert('Depósito realizado com sucesso!');
+        carregarDados();  // Atualiza o saldo
+      } else {
+        alert('Erro ao realizar depósito');
+      }
+    } catch (error) {
+      console.error('Erro:', error);
+      alert('Erro ao realizar depósito');
+    }
+  }
+
+  // Carrega dados quando a página abre
+  window.addEventListener('load', carregarDados);
+  </script>
+</body>
+</html>
+
+

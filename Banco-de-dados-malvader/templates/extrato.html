@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Extrato - Banco Malvader</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #000B3A;
+    }
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body class="text-white min-h-screen">
+  <header class="bg-white py-4 px-6 mb-8 shadow-lg">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <img src="../assets/images/logo.png" alt="Logo malvader" class="h-12">
+      <div class="flex items-center space-x-6">
+        <div class="text-right">
+          <p class="text-sm text-gray-600">Bem-vindo(a),</p>
+          <p class="font-semibold text-gray-900" id="nomeUsuario">Carregando...</p>
+        </div>
+        <a href="../templates/painel_cliente.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+          <i class="fas fa-arrow-left mr-2"></i>Voltar
+        </a>
+        <a href="../templates/Login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
+          <i class="fas fa-sign-out-alt mr-2"></i>Sair
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-8">
+      <div class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-list text-2xl text-white"></i>
+      </div>
+      <h1 class="text-3xl font-bold mb-2">Extrato</h1>
+      <p class="text-gray-300">Acompanhe todas as suas movimentações financeiras</p>
+    </div>
+
+    <!-- Resumo da Conta -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="glass-effect rounded-xl p-6">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm opacity-70">Saldo Atual</span>
+          <i class="fas fa-wallet text-green-400"></i>
+        </div>
+        <p class="text-2xl font-bold text-green-400" id="saldoAtual">R$ 0,00</p>
+      </div>
+      <div class="glass-effect rounded-xl p-6">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm opacity-70">Receitas do Mês</span>
+          <i class="fas fa-arrow-up text-green-400"></i>
+        </div>
+        <p class="text-2xl font-bold text-green-400" id="receitasMes">R$ 0,00</p>
+      </div>
+      <div class="glass-effect rounded-xl p-6">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm opacity-70">Despesas do Mês</span>
+          <i class="fas fa-arrow-down text-red-400"></i>
+        </div>
+        <p class="text-2xl font-bold text-red-400" id="despesasMes">R$ 0,00</p>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="glass-effect rounded-xl p-6 mb-8">
+      <h3 class="text-lg font-semibold mb-4 flex items-center">
+        <i class="fas fa-filter mr-3 text-blue-400"></i>
+        Filtros
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div>
+          <label class="block text-sm font-medium mb-2">Período</label>
+          <select id="periodo" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <option value="7">Últimos 7 dias</option>
+            <option value="30" selected>Últimos 30 dias</option>
+            <option value="90">Últimos 90 dias</option>
+            <option value="365">Último ano</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2">Tipo</label>
+          <select id="tipoTransacao" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <option value="">Todas</option>
+            <option value="deposito">Depósitos</option>
+            <option value="saque">Saques</option>
+            <option value="transferencia">Transferências</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2">Valor Mínimo</label>
+          <input 
+            type="number" 
+            id="valorMinimo" 
+            step="0.01"
+            class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500" 
+            placeholder="R$ 0,00"
+          >
+        </div>
+        <div class="flex items-end">
+          <button onclick="aplicarFiltros()" class="w-full bg-purple-500 hover:bg-purple-600 text-white py-3 rounded-lg transition-colors font-semibold">
+            <i class="fas fa-search mr-2"></i>Filtrar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lista de Transações -->
+    <div class="glass-effect rounded-xl p-6">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-semibold flex items-center">
+          <i class="fas fa-history mr-3 text-purple-400"></i>
+          Movimentações
+        </h3>
+        <button onclick="exportarExtrato()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors text-sm">
+          <i class="fas fa-download mr-2"></i>Exportar PDF
+        </button>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="border-b border-white/20">
+              <th class="text-left py-3">Data</th>
+              <th class="text-left py-3">Descrição</th>
+              <th class="text-left py-3">Tipo</th>
+              <th class="text-left py-3">Valor</th>
+              <th class="text-left py-3">Saldo</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaTransacoes">
+            <!-- Transações serão carregadas dinamicamente -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Loading indicator -->
+      <div id="loading" class="text-center py-8 hidden">
+        <i class="fas fa-spinner fa-spin text-purple-400 text-2xl"></i>
+        <p class="text-gray-300 mt-2">Carregando transações...</p>
+      </div>
+
+      <!-- Empty state -->
+      <div id="emptyState" class="text-center py-8 hidden">
+        <i class="fas fa-inbox text-gray-400 text-3xl mb-4"></i>
+        <p class="text-gray-300">Nenhuma transação encontrada no período selecionado.</p>
+      </div>
+    </div>
+
+    <!-- Paginação -->
+    <div class="glass-effect rounded-xl p-4 mt-6">
+      <div class="flex justify-between items-center">
+        <span class="text-sm text-gray-300" id="infoResultados">Mostrando 0 resultados</span>
+        <div class="flex space-x-2">
+          <button id="btnAnterior" onclick="paginaAnterior()" class="px-3 py-1 bg-purple-500 hover:bg-purple-600 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <span class="px-3 py-1 text-gray-300" id="numeroPagina">Página 1</span>
+          <button id="btnProximo" onclick="proximaPagina()" class="px-3 py-1 bg-purple-500 hover:bg-purple-600 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let usuario = null;
+    let transacoes = [];
+    let paginaAtual = 1;
+    const itensPorPagina = 10;
+
+    async function carregarDadosUsuario() {
+      usuario = JSON.parse(localStorage.getItem('usuario'));
+      
+      if (!usuario) {
+        alert('Sessão expirada. Faça login novamente.');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      // Atualiza informações do usuário
+      document.getElementById('nomeUsuario').textContent = usuario.nome;
+      
+      // Carrega saldo atualizado
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/saldo/${usuario.cpf}`);
+        const data = await response.json();
+        
+        if (data.saldo !== undefined) {
+          document.getElementById('saldoAtual').textContent = `R$ ${data.saldo.toFixed(2).replace('.', ',')}`;
+        }
+      } catch (error) {
+        console.error('Erro ao carregar saldo:', error);
+      }
+
+      // Carrega transações
+      await carregarTransacoes();
+    }
+
+    async function carregarTransacoes() {
+      const loading = document.getElementById('loading');
+      const tabela = document.getElementById('tabelaTransacoes');
+      const emptyState = document.getElementById('emptyState');
+      
+      loading.classList.remove('hidden');
+      tabela.innerHTML = '';
+      emptyState.classList.add('hidden');
+
+      try {
+        // Simulação de transações (pode ser conectado ao backend posteriormente)
+        const transacoesSimuladas = [
+          {
+            id: 1,
+            data: '03/06/2025',
+            descricao: 'Depósito via internet banking',
+            tipo: 'deposito',
+            valor: 500.00,
+            saldo: 2500.00
+          },
+          {
+            id: 2,
+            data: '02/06/2025',
+            descricao: 'Transferência para 123457-8',
+            tipo: 'transferencia',
+            valor: -250.00,
+            saldo: 2000.00
+          },
+          {
+            id: 3,
+            data: '01/06/2025',
+            descricao: 'Saque ATM',
+            tipo: 'saque',
+            valor: -100.00,
+            saldo: 2250.00
+          },
+          {
+            id: 4,
+            data: '31/05/2025',
+            descricao: 'Depósito via transferência',
+            tipo: 'deposito',
+            valor: 1000.00,
+            saldo: 2350.00
+          },
+          {
+            id: 5,
+            data: '30/05/2025',
+            descricao: 'Pagamento de conta',
+            tipo: 'transferencia',
+            valor: -150.00,
+            saldo: 1350.00
+          }
+        ];
+
+        transacoes = transacoesSimuladas;
+        calcularResumoMensal();
+        renderizarTransacoes();
+
+      } catch (error) {
+        console.error('Erro ao carregar transações:', error);
+        emptyState.classList.remove('hidden');
+      } finally {
+        loading.classList.add('hidden');
+      }
+    }
+
+    function calcularResumoMensal() {
+      const receitas = transacoes.filter(t => t.valor > 0).reduce((acc, t) => acc + t.valor, 0);
+      const despesas = transacoes.filter(t => t.valor < 0).reduce((acc, t) => acc + Math.abs(t.valor), 0);
+      
+      document.getElementById('receitasMes').textContent = `R$ ${receitas.toFixed(2).replace('.', ',')}`;
+      document.getElementById('despesasMes').textContent = `R$ ${despesas.toFixed(2).replace('.', ',')}`;
+    }
+
+    function renderizarTransacoes() {
+      const tabela = document.getElementById('tabelaTransacoes');
+      const emptyState = document.getElementById('emptyState');
+      
+      const transacoesFiltradas = aplicarFiltrosLocal();
+      const inicio = (paginaAtual - 1) * itensPorPagina;
+      const fim = inicio + itensPorPagina;
+      const transacoesPagina = transacoesFiltradas.slice(inicio, fim);
+
+      if (transacoesPagina.length === 0) {
+        emptyState.classList.remove('hidden');
+        tabela.innerHTML = '';
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      
+      tabela.innerHTML = transacoesPagina.map(transacao => {
+        const tipoIcon = getTipoIcon(transacao.tipo);
+        const valorClass = transacao.valor >= 0 ? 'text-green-400' : 'text-red-400';
+        const valorFormatado = (transacao.valor >= 0 ? '+' : '') + `R$ ${Math.abs(transacao.valor).toFixed(2).replace('.', ',')}`;
+        
+        return `
+          <tr class="border-b border-white/10 hover:bg-white/5">
+            <td class="py-3">${transacao.data}</td>
+            <td class="py-3">
+              <div class="flex items-center">
+                <div class="w-8 h-8 ${tipoIcon.bg} rounded-full flex items-center justify-center mr-3">
+                  <i class="${tipoIcon.icon} text-sm"></i>
+                </div>
+                ${transacao.descricao}
+  </div>
+            </td>
+            <td class="py-3">
+              <span class="px-2 py-1 ${tipoIcon.tagBg} ${tipoIcon.tagText} rounded-full text-xs capitalize">
+                ${transacao.tipo}
+              </span>
+            </td>
+            <td class="py-3 ${valorClass} font-semibold">${valorFormatado}</td>
+            <td class="py-3">R$ ${transacao.saldo.toFixed(2).replace('.', ',')}</td>
+          </tr>
+        `;
+      }).join('');
+
+      atualizarPaginacao(transacoesFiltradas.length);
+    }
+
+    function getTipoIcon(tipo) {
+      const icons = {
+        deposito: {
+          icon: 'fas fa-arrow-down',
+          bg: 'bg-green-500',
+          tagBg: 'bg-green-500/20',
+          tagText: 'text-green-400'
+        },
+        saque: {
+          icon: 'fas fa-arrow-up',
+          bg: 'bg-red-500',
+          tagBg: 'bg-red-500/20',
+          tagText: 'text-red-400'
+        },
+        transferencia: {
+          icon: 'fas fa-exchange-alt',
+          bg: 'bg-blue-500',
+          tagBg: 'bg-blue-500/20',
+          tagText: 'text-blue-400'
+        }
+      };
+      return icons[tipo] || icons.transferencia;
+    }
+
+    function aplicarFiltrosLocal() {
+      const periodo = parseInt(document.getElementById('periodo').value);
+      const tipo = document.getElementById('tipoTransacao').value;
+      const valorMinimo = parseFloat(document.getElementById('valorMinimo').value) || 0;
+      
+      return transacoes.filter(t => {
+        // Aqui seria aplicado o filtro de período baseado em data real
+        const tipoValido = !tipo || t.tipo === tipo;
+        const valorValido = Math.abs(t.valor) >= valorMinimo;
+        return tipoValido && valorValido;
+      });
+    }
+
+    function aplicarFiltros() {
+      paginaAtual = 1;
+      renderizarTransacoes();
+    }
+
+    function atualizarPaginacao(totalItens) {
+      const totalPaginas = Math.ceil(totalItens / itensPorPagina);
+      
+      document.getElementById('infoResultados').textContent = `Mostrando ${totalItens} resultados`;
+      document.getElementById('numeroPagina').textContent = `Página ${paginaAtual} de ${totalPaginas}`;
+      
+      document.getElementById('btnAnterior').disabled = paginaAtual === 1;
+      document.getElementById('btnProximo').disabled = paginaAtual === totalPaginas || totalPaginas === 0;
+    }
+
+    function paginaAnterior() {
+      if (paginaAtual > 1) {
+        paginaAtual--;
+        renderizarTransacoes();
+      }
+    }
+
+    function proximaPagina() {
+      const totalItens = aplicarFiltrosLocal().length;
+      const totalPaginas = Math.ceil(totalItens / itensPorPagina);
+      
+      if (paginaAtual < totalPaginas) {
+        paginaAtual++;
+        renderizarTransacoes();
+      }
+    }
+
+    function exportarExtrato() {
+      alert('Funcionalidade de exportação será implementada em breve!');
+    }
+
+    // Carrega dados quando a página abre
+    window.addEventListener('load', carregarDadosUsuario);
+  </script>
+</body>
+</html>

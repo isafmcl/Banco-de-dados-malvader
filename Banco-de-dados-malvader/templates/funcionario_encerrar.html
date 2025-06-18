@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Encerrar Conta - Banco Malvader</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #000B3A;
+    }
+    .input-field {
+      @apply w-full px-4 py-2 rounded bg-gray-700 border border-gray-600 text-white placeholder-gray-400;
+      @apply focus:border-blue-500 focus:ring-1 focus:ring-blue-500;
+    }
+  </style>
+</head>
+<body class="text-white">
+  <header class="bg-white py-4 px-6 mb-8 shadow-lg">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <div class="flex items-center space-x-4">
+        <a href="painel_funcionario.html" class="text-gray-600 hover:text-gray-800">
+          <i class="fas fa-arrow-left"></i> Voltar ao Painel
+        </a>
+        <img src="../assets/images/logo.png" alt="Logo malvader" class="h-12">
+      </div>
+      <div class="flex items-center space-x-6">
+        <div class="text-right">
+          <p class="text-sm text-gray-600">Funcionário</p>
+          <p class="font-semibold text-gray-900" id="nomeFuncionario">Carregando...</p>
+          <p class="text-xs text-gray-500" id="cargoFuncionario">Cargo...</p>
+        </div>
+        <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
+          <i class="fas fa-sign-out-alt mr-2"></i>Sair
+        </a>
+      </div>
+    </div>
+  </header>
+  <main class="max-w-2xl mx-auto p-6">
+    <div class="bg-[#000B3A] rounded-lg p-8 relative">
+      <div class="absolute top-8 right-8">
+        <div class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center">
+          <i class="fas fa-user-minus text-xl"></i>
+        </div>
+      </div>
+
+      <h1 class="text-3xl font-bold mb-2">Encerrar Conta</h1>
+      <p class="text-gray-400 mb-8">Preencha os dados para encerrar a conta do cliente</p>
+
+      <div class="space-y-6">
+        <div>
+          <label class="block text-sm mb-2">CPF do Cliente</label>
+          <input type="text" id="cpfCliente" 
+            class="w-full px-4 py-2 rounded bg-white/10 border border-white/20 text-white placeholder-gray-400"
+            placeholder="Digite o CPF do cliente">
+        </div>
+        <div>
+          <label class="block text-sm mb-2">Número da Conta</label>
+          <input type="text" id="numeroConta" 
+            class="w-full px-4 py-2 rounded bg-white/10 border border-white/20 text-white placeholder-gray-400"
+            placeholder="Digite o número da conta">        </div>
+
+        <!-- Resultado da busca -->
+        <div id="dadosCliente" class="hidden mt-8 space-y-6">
+          <div class="p-4 rounded bg-white/5">
+            <h3 class="font-medium mb-4">Dados da Conta</h3>
+            <div class="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <p class="text-gray-400">Titular</p>
+                <p id="nomeTitular" class="font-medium">-</p>
+              </div>
+              <div>
+                <p class="text-gray-400">CPF</p>
+                <p id="cpfTitular" class="font-medium">-</p>
+              </div>
+              <div>
+                <p class="text-gray-400">Número da Conta</p>
+                <p id="numeroContaTitular" class="font-medium">-</p>
+              </div>
+              <div>
+                <p class="text-gray-400">Saldo Atual</p>
+                <p id="saldoAtual" class="font-medium">-</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 p-4 bg-red-500/10 border border-red-500/20 rounded">
+            <i class="fas fa-exclamation-triangle text-red-500 mt-0.5"></i>
+            <div class="text-sm">
+              <p class="font-medium text-red-400 mb-2">Atenção</p>
+              <p class="text-gray-300 mb-2">
+                O encerramento da conta é uma operação irreversível. Certifique-se de que:
+              </p>
+              <ul class="list-disc list-inside space-y-1 text-gray-300">
+                <li>O cliente solicitou formalmente o encerramento</li>
+                <li>Não há pendências financeiras</li>
+                <li>O saldo foi sacado ou transferido</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <button onclick="confirmarEncerramento()" 
+              class="flex-1 bg-red-500 hover:bg-red-600 py-2 rounded transition-colors">
+              Encerrar Conta
+            </button>
+            <button onclick="cancelarOperacao()" 
+              class="flex-1 border border-white/20 hover:bg-white/10 py-2 rounded transition-colors">
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>  <script>
+    // Formatação de CPF
+    function formatarCPF(cpf) {
+      return cpf.replace(/\D/g, '')
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
+        .slice(0, 14);
+    }
+
+    // Formatação de número de conta
+    function formatarConta(numero) {
+      return numero.replace(/\D/g, '')
+        .replace(/(\d{5})(\d{1,3})/, '$1-$2')
+        .slice(0, 9);
+    }
+
+    // Formatar campos ao digitar
+    document.getElementById('cpfCliente').addEventListener('input', function(e) {
+      e.target.value = formatarCPF(e.target.value);
+    });
+
+    document.getElementById('numeroConta').addEventListener('input', function(e) {
+      e.target.value = formatarConta(e.target.value);
+    });
+
+    // Buscar cliente quando os campos perderem o foco
+    ['cpfCliente', 'numeroConta'].forEach(id => {
+      document.getElementById(id).addEventListener('blur', buscarCliente);
+    });
+
+    async function buscarCliente() {
+      const cpf = document.getElementById('cpfCliente').value.replace(/\D/g, '');
+      const conta = document.getElementById('numeroConta').value.replace(/\D/g, '');
+      
+      if (!cpf && !conta) return;
+
+      try {
+        const response = await fetch(`http://localhost:5000/consultar-cliente/${cpf || conta}`);
+        if (!response.ok) throw new Error('Cliente não encontrado');
+        
+        const cliente = await response.json();
+        
+        document.getElementById('nomeTitular').textContent = cliente.nome;
+        document.getElementById('cpfTitular').textContent = formatarCPF(cliente.cpf);
+        document.getElementById('numeroContaTitular').textContent = formatarConta(cliente.numero_conta);
+        document.getElementById('saldoAtual').textContent = 
+          new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
+          .format(cliente.saldo);
+
+        document.getElementById('dadosCliente').classList.remove('hidden');
+      } catch (error) {
+        alert('Cliente não encontrado ou erro na busca.');
+        document.getElementById('dadosCliente').classList.add('hidden');
+      }
+    }
+
+    async function confirmarEncerramento() {
+      const conta = document.getElementById('numeroContaTitular').textContent;
+      const saldoTexto = document.getElementById('saldoAtual').textContent;
+      const saldo = parseFloat(saldoTexto.replace(/[^\d,-]/g, '').replace(',', '.'));
+
+      if (saldo > 0) {
+        alert('ATENÇÃO: Não é possível encerrar uma conta com saldo positivo. O cliente deve sacar ou transferir o saldo primeiro.');
+        return;
+      }
+
+      if (!confirm('ATENÇÃO: Você tem certeza que deseja encerrar esta conta? Esta ação não pode ser desfeita.')) {
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:5000/encerrar-conta', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ numero_conta: conta.replace(/\D/g, '') })
+        });
+
+        if (!response.ok) throw new Error('Erro ao encerrar conta');
+
+        alert('Conta encerrada com sucesso!');
+        window.location.href = 'painel_funcionario.html';
+      } catch (error) {
+        alert('Erro ao encerrar conta: ' + error.message);
+      }
+    }
+
+    function cancelarOperacao() {
+      if (confirm('Deseja cancelar a operação de encerramento?')) {
+        document.getElementById('cpfCliente').value = '';
+        document.getElementById('numeroConta').value = '';
+        document.getElementById('dadosCliente').classList.add('hidden');
+      }
+    }
+
+    // Formatar CPF
+    document.getElementById('cpfCliente').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length > 11) value = value.slice(0, 11);
+      
+      if (value.length > 9) {
+        value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+      } else if (value.length > 6) {
+        value = value.replace(/(\d{3})(\d{3})(\d{3})/, '$1.$2.$3');
+      } else if (value.length > 3) {
+        value = value.replace(/(\d{3})(\d{3})/, '$1.$2');
+      }
+      
+      e.target.value = value;
+    });
+
+    // Formatar número da conta
+    document.getElementById('numeroConta').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length > 8) value = value.slice(0, 8);
+      
+      if (value.length > 5) {
+        value = value.replace(/(\d{5})(\d{1,3})/, '$1-$2');
+      }
+      
+      e.target.value = value;
+    });
+
+    // Buscar cliente por CPF ou número da conta
+    async function buscarCliente() {
+      const cpf = document.getElementById('cpfCliente').value;
+      const numeroConta = document.getElementById('numeroConta').value;
+
+      if (!cpf && !numeroConta) {
+        alert('Informe o CPF ou número da conta');
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:5000/consultar-cliente/${cpf || numeroConta}`);
+        if (!response.ok) {
+          throw new Error('Cliente não encontrado');
+        }
+
+        const cliente = await response.json();
+        
+        // Preenche os dados do cliente
+        document.getElementById('nomeTitular').textContent = cliente.nome;
+        document.getElementById('cpfTitular').textContent = cliente.cpf;
+        document.getElementById('numeroContaTitular').textContent = cliente.numero_conta;
+        document.getElementById('saldoAtual').textContent = 
+          new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
+          .format(cliente.saldo);
+
+        // Mostra a seção de dados do cliente
+        document.getElementById('dadosCliente').classList.remove('hidden');
+      } catch (error) {
+        alert('Erro ao buscar cliente: ' + error.message);
+      }
+    }
+
+    // Ambos os campos de busca devem disparar a busca ao perder o foco
+    document.getElementById('cpfCliente').addEventListener('blur', buscarCliente);
+    document.getElementById('numeroConta').addEventListener('blur', buscarCliente);
+
+    // Confirmar encerramento
+    async function confirmarEncerramento() {
+      const numeroConta = document.getElementById('numeroContaTitular').textContent;
+      const saldoAtual = parseFloat(document.getElementById('saldoAtual').textContent.replace(/[^\d,-]/g, '').replace(',', '.'));
+
+      if (saldoAtual > 0) {
+        alert('Não é possível encerrar uma conta com saldo positivo. O cliente deve sacar ou transferir o saldo primeiro.');
+        return;
+      }
+
+      if (!confirm('Tem certeza que deseja encerrar esta conta? Esta ação não pode ser desfeita.')) {
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:5000/encerrar-conta', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ numero_conta: numeroConta })
+        });
+
+        if (!response.ok) {
+          throw new Error('Erro ao encerrar conta');
+        }
+
+        alert('Conta encerrada com sucesso!');
+        window.location.href = 'painel_funcionario.html';
+      } catch (error) {
+        alert('Erro ao encerrar conta: ' + error.message);
+      }
+    }
+
+    // Cancelar operação
+    function cancelarOperacao() {
+      if (confirm('Deseja cancelar a operação de encerramento?')) {
+        document.getElementById('dadosCliente').classList.add('hidden');
+        document.getElementById('cpfCliente').value = '';
+        document.getElementById('numeroConta').value = '';
+      }
+    }
+  </script>
+</body>
+</html>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #000B3A;
+    }
+  </style>
+</head>
+
+  
+
+      <div id="detalhesCliente" class="hidden">
+        <div class="glass-effect rounded-xl p-6 mb-6">
+          <h3 class="text-xl font-semibold mb-4">Detalhes da Conta</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <p class="text-sm opacity-70">Nome</p>
+              <p class="font-medium" id="nomeCliente">-</p>
+            </div>
+            <div>
+              <p class="text-sm opacity-70">CPF</p>
+              <p class="font-medium" id="cpfCliente">-</p>
+            </div>
+            <div>
+              <p class="text-sm opacity-70">Número da Conta</p>
+              <p class="font-medium" id="numeroConta">-</p>
+            </div>
+            <div>
+              <p class="text-sm opacity-70">Saldo Atual</p>
+              <p class="font-medium" id="saldoAtual">-</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-6">
+          <div class="flex items-center">
+            <i class="fas fa-exclamation-triangle text-red-500 mr-3"></i>
+            <p class="text-sm">
+              Atenção: O encerramento da conta é irreversível. Certifique-se que o cliente esteja ciente e que não haja pendências.
+            </p>
+          </div>
+        </div>
+
+        <form id="encerramentoForm" class="space-y-6">
+          <div>
+            <label class="block text-sm font-medium mb-2" for="motivoEncerramento">Motivo do Encerramento</label>
+            <textarea id="motivoEncerramento" name="motivoEncerramento" rows="3" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-blue-500 focus:outline-none" required></textarea>
+          </div>
+
+          <div class="flex items-center mb-4">
+            <input type="checkbox" id="confirmarEncerramento" class="mr-2" required>
+            <label for="confirmarEncerramento" class="text-sm">
+              Confirmo que verifiquei todos os dados e que o cliente está ciente do encerramento da conta
+            </label>
+          </div>
+
+          <div class="flex justify-end space-x-4">
+            <button type="button" onclick="window.location.href='painel_funcionario.html'" class="px-6 py-2 rounded-lg border border-white/20 hover:bg-white/10 transition-colors">
+              Cancelar
+            </button>
+            <button type="submit" class="px-6 py-2 rounded-lg bg-red-500 hover:bg-red-600 transition-colors">
+              Encerrar Conta
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Carregar dados do funcionário logado
+    window.addEventListener('load', function() {
+      const usuario = JSON.parse(localStorage.getItem('usuario'));
+      if (usuario) {
+        document.getElementById('nomeFuncionario').textContent = usuario.nome;
+        document.getElementById('cargoFuncionario').textContent = usuario.cargo || 'Funcionário';
+      } else {
+        window.location.href = 'login.html';
+      }
+    });
+
+    // Buscar cliente
+    document.getElementById('pesquisaForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const cpf = document.getElementById('cpfPesquisa').value;
+
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/buscar_cliente/${cpf}`);
+        const data = await response.json();
+
+        if (data.success) {
+          document.getElementById('detalhesCliente').classList.remove('hidden');
+          document.getElementById('nomeCliente').textContent = data.cliente.nome;
+          document.getElementById('cpfCliente').textContent = data.cliente.cpf;
+          document.getElementById('numeroConta').textContent = data.cliente.numero_conta;
+          document.getElementById('saldoAtual').textContent = 
+            new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
+            .format(data.cliente.saldo);
+        } else {
+          alert(data.message || 'Cliente não encontrado');
+        }
+      } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao buscar cliente');
+      }
+    });
+
+    // Encerrar conta
+    document.getElementById('encerramentoForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      if (!confirm('Tem certeza que deseja encerrar esta conta? Esta ação não pode ser desfeita.')) {
+        return;
+      }
+
+      const cpf = document.getElementById('cpfPesquisa').value;
+      const motivo = document.getElementById('motivoEncerramento').value;
+
+      try {
+        const response = await fetch('http://127.0.0.1:5000/encerrar_conta', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            cpf: cpf,
+            motivo: motivo
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          alert('Conta encerrada com sucesso!');
+          window.location.href = 'painel_funcionario.html';
+        } else {
+          alert(data.message || 'Erro ao encerrar conta');
+        }
+      } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao conectar com o servidor');
+      }
+    });
+  </script>
+</body>
+</html>

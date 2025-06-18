@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Funcionário - Banco Malvader</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #000B3A;
+    }
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body class="text-white">
+  <header class="bg-white py-4 px-6 mb-8 shadow-lg">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <img src="../assets/images/logo.png" alt="Logo malvader" class="h-12">
+      <div class="flex items-center space-x-6">
+        <div class="text-right">
+          <p class="text-sm text-gray-600">Funcionário</p>
+          <p class="font-semibold text-gray-900" id="nomeFuncionario">Carregando...</p>
+          <p class="text-xs text-gray-500" id="cargoFuncionario">Cargo...</p>
+        </div>
+        <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
+          <i class="fas fa-sign-out-alt mr-2"></i>Sair
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6">
+    <div class="mb-12">
+      <h2 class="text-3xl font-bold mb-2">Painel Administrativo</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="glass-effect rounded-xl p-6">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm opacity-70">Total de Clientes</span>
+            <i class="fas fa-users text-blue-400"></i>
+          </div>
+          <p class="text-3xl font-bold text-blue-400" id="totalClientes">Carregando...</p>
+        </div>
+        <div class="glass-effect rounded-xl p-6">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm opacity-70">Contas Ativas</span>
+            <i class="fas fa-credit-card text-green-400"></i>
+          </div>
+          <p class="text-3xl font-bold text-green-400" id="contasAtivas">Carregando...</p>
+        </div>
+        <div class="glass-effect rounded-xl p-6">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm opacity-70">Transações Hoje</span>
+            <i class="fas fa-exchange-alt text-purple-400"></i>
+          </div>
+          <p class="text-3xl font-bold text-purple-400" id="transacoesHoje">Carregando...</p>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="text-2xl font-bold mb-6 text-center">Gerenciamento</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Abertura de Conta -->
+      <div class="glass-effect rounded-xl p-6 card-hover flex flex-col h-[250px]">
+        <div class="flex items-center justify-center mb-4">
+          <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+            <i class="fas fa-user-plus text-xl"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-semibold text-center mb-2">Abertura de Conta</h3>
+        <p class="text-sm opacity-70 mb-4 text-center flex-grow">Cadastre novos clientes e abra contas.</p>
+        <a href="funcionario_abertura.html" class="block w-full bg-green-500 text-white text-center py-3 rounded-lg hover:bg-green-600 transition-colors mt-auto">
+          Abrir Conta
+        </a>
+      </div>
+
+      <!-- Encerramento de Conta -->
+      <div class="glass-effect rounded-xl p-6 card-hover flex flex-col h-[250px]">
+        <div class="flex items-center justify-center mb-4">
+          <div class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center">
+            <i class="fas fa-user-minus text-xl"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-semibold text-center mb-2">Encerrar Conta</h3>
+        <p class="text-sm opacity-70 mb-4 text-center flex-grow">Encerre contas de clientes.</p>
+        <a href="funcionario_encerrar.html" class="block w-full bg-red-500 text-white text-center py-3 rounded-lg hover:bg-red-600 transition-colors mt-auto">
+          Encerrar
+        </a>
+      </div>
+
+      <!-- Consultar Cliente -->
+      <div class="glass-effect rounded-xl p-6 card-hover flex flex-col h-[250px]">
+        <div class="flex items-center justify-center mb-4">
+          <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+            <i class="fas fa-search text-xl"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-semibold text-center mb-2">Consultar Cliente</h3>
+        <p class="text-sm opacity-70 mb-4 text-center flex-grow">Busque informações de clientes.</p>
+        <a href="funcionario_consultar.html" class="block w-full bg-blue-500 text-white text-center py-3 rounded-lg hover:bg-blue-600 transition-colors mt-auto">
+          Consultar
+        </a>
+      </div>
+
+      <!-- Transações -->
+      <div class="glass-effect rounded-xl p-6 card-hover flex flex-col h-[250px]">
+        <div class="flex items-center justify-center mb-4">
+          <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
+            <i class="fas fa-exchange-alt text-xl"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-semibold text-center mb-2">Transações</h3>
+        <p class="text-sm opacity-70 mb-4 text-center flex-grow">Visualize o histórico de transações.</p>
+        <a href="funcionario_transacoes.html" class="block w-full bg-purple-500 text-white text-center py-3 rounded-lg hover:bg-purple-600 transition-colors mt-auto">
+          Ver Transações
+        </a>
+      </div>
+
+      <!-- Inadimplentes -->
+      <div class="glass-effect rounded-xl p-6 card-hover flex flex-col h-[250px]">
+        <div class="flex items-center justify-center mb-4">
+          <div class="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center">
+            <i class="fas fa-exclamation-triangle text-xl"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-semibold text-center mb-2">Inadimplentes</h3>
+        <p class="text-sm opacity-70 mb-4 text-center flex-grow">Gerencie clientes inadimplentes.</p>
+        <a href="funcionario_inadimplentes.html" class="block w-full bg-yellow-500 text-white text-center py-3 rounded-lg hover:bg-yellow-600 transition-colors mt-auto">
+          Ver Inadimplentes
+        </a>
+      </div>
+
+      <!-- Configurações -->
+      <div class="glass-effect rounded-xl p-6 card-hover flex flex-col h-[250px]">
+        <div class="flex items-center justify-center mb-4">
+          <div class="w-12 h-12 bg-gray-500 rounded-full flex items-center justify-center">
+            <i class="fas fa-cog text-xl"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-semibold text-center mb-2">Configurações</h3>
+        <p class="text-sm opacity-70 mb-4 text-center flex-grow">Ajuste as configurações do sistema.</p>
+        <a href="funcionario_configuracoes.html" class="block w-full bg-gray-500 text-white text-center py-3 rounded-lg hover:bg-gray-600 transition-colors mt-auto">
+          Configurar
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Carregar dados do funcionário logado
+    window.addEventListener('load', function() {
+      const usuario = JSON.parse(localStorage.getItem('usuario'));
+      if (usuario) {
+        document.getElementById('nomeFuncionario').textContent = usuario.nome;
+        document.getElementById('cargoFuncionario').textContent = usuario.cargo || 'Funcionário';
+        carregarDashboard();
+      } else {
+        window.location.href = 'login.html';
+      }
+    });    // Carregar dados do dashboard
+    async function carregarDashboard() {
+      try {
+        const response = await fetch('http://localhost:5000/estatisticas', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Erro HTTP: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('Dados recebidos:', data); // Para debug
+        
+        // Atualiza os elementos na página se os dados existirem
+        if (data) {
+          document.getElementById('totalClientes').textContent = data.total_clientes || '0';
+          document.getElementById('contasAtivas').textContent = data.contas_ativas || '0';
+          document.getElementById('transacoesHoje').textContent = data.transacoes_hoje || '0';
+        } else {
+          throw new Error('Dados não recebidos do servidor');
+        }
+      } catch (error) {
+        console.error('Erro ao carregar dados:', error);
+        alert('Erro ao carregar dados do dashboard');
+      }
+    }
+  </script>
+</body>
+</html>

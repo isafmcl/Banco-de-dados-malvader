@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento - Funcionário | Banco Malvader</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #000B3A 0%, #001B5E 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .option-card {
+            background: rgba(30, 58, 138, 0.3);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .option-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            background: rgba(30, 58, 138, 0.4);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="glass border-b border-white/20 p-4">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <i class="fas fa-university text-3xl text-white"></i>
+                <div>
+                    <h1 class="text-xl font-bold text-white">Banco Malvader</h1>
+                    <p class="text-blue-200 text-sm">Painel do Funcionário</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="text-right">
+                    <p class="text-white font-medium" id="nomeUsuario">Carregando...</p>
+                    <p class="text-blue-200 text-sm" id="cargoUsuario">Funcionário</p>
+                </div>
+                <button onclick="logout()" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-white transition-colors">
+                    <i class="fas fa-sign-out-alt mr-2"></i>Sair
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-6xl mx-auto p-6">
+        <!-- Título Principal -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-white mb-4">Gerenciamento</h1>
+            <p class="text-blue-200 text-lg">Selecione uma opção para gerenciar o sistema bancário</p>
+        </div>
+
+        <!-- Grid de Opções -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <!-- Abertura de Conta -->
+            <div class="option-card rounded-2xl p-8 text-center cursor-pointer" onclick="window.location.href='funcionario_abertura.html'">
+                <div class="bg-green-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-user-plus text-2xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">Abertura de Conta</h3>
+                <p class="text-blue-200 mb-6">Cadastre novos clientes e abra contas.</p>
+                <button class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-medium transition-colors">
+                    Abrir Conta
+                </button>
+            </div>
+
+            <!-- Encerrar Conta -->
+            <div class="option-card rounded-2xl p-8 text-center cursor-pointer" onclick="window.location.href='funcionario_encerrar.html'">
+                <div class="bg-red-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-user-minus text-2xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">Encerrar Conta</h3>
+                <p class="text-blue-200 mb-6">Encerre contas de clientes.</p>
+                <button class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg font-medium transition-colors">
+                    Encerrar
+                </button>
+            </div>
+
+            <!-- Consultar Cliente -->
+            <div class="option-card rounded-2xl p-8 text-center cursor-pointer" onclick="window.location.href='funcionario_consultar.html'">
+                <div class="bg-blue-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-search text-2xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">Consultar Cliente</h3>
+                <p class="text-blue-200 mb-6">Busque informações de clientes.</p>
+                <button class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-medium transition-colors">
+                    Consultar
+                </button>
+            </div>
+
+            <!-- Movimentações -->
+            <div class="option-card rounded-2xl p-8 text-center cursor-pointer" onclick="window.location.href='funcionario_transacoes.html'">
+                <div class="bg-purple-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-file-alt text-2xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">Movimentações</h3>
+                <p class="text-blue-200 mb-6">Relatório completo de transações.</p>
+                <button class="w-full bg-purple-500 hover:bg-purple-600 text-white py-3 rounded-lg font-medium transition-colors">
+                    Gerar Relatório
+                </button>
+            </div>
+
+            <!-- Inadimplentes -->
+            <div class="option-card rounded-2xl p-8 text-center cursor-pointer" onclick="window.location.href='funcionario_inadimplentes.html'">
+                <div class="bg-yellow-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-exclamation-triangle text-2xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">Inadimplentes</h3>
+                <p class="text-blue-200 mb-6">Lista de clientes inadimplentes.</p>
+                <button class="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg font-medium transition-colors">
+                    Ver Lista
+                </button>
+            </div>
+
+            <!-- Configurações -->
+            <div class="option-card rounded-2xl p-8 text-center cursor-pointer" onclick="window.location.href='funcionario_configuracoes.html'">
+                <div class="bg-indigo-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-cog text-2xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">Configurações</h3>
+                <p class="text-blue-200 mb-6">Configure parâmetros do sistema.</p>
+                <button class="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-3 rounded-lg font-medium transition-colors">
+                    Configurar
+                </button>
+            </div>
+        </div>
+
+        <!-- Estatísticas Rápidas -->
+        <div class="mt-16">
+            <h2 class="text-2xl font-bold text-white mb-6 text-center">Estatísticas do Banco</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div class="glass rounded-xl p-6 text-center">
+                    <i class="fas fa-users text-3xl text-blue-400 mb-3"></i>
+                    <h3 class="text-white text-lg font-medium">Total de Clientes</h3>
+                    <p class="text-3xl font-bold text-white" id="totalClientes">0</p>
+                </div>
+                <div class="glass rounded-xl p-6 text-center">
+                    <i class="fas fa-credit-card text-3xl text-green-400 mb-3"></i>
+                    <h3 class="text-white text-lg font-medium">Contas Ativas</h3>
+                    <p class="text-3xl font-bold text-white" id="contasAtivas">0</p>
+                </div>
+                <div class="glass rounded-xl p-6 text-center">
+                    <i class="fas fa-exchange-alt text-3xl text-yellow-400 mb-3"></i>
+                    <h3 class="text-white text-lg font-medium">Transações Hoje</h3>
+                    <p class="text-3xl font-bold text-white" id="transacoesHoje">0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Verificar sessão
+        const usuarioLogado = JSON.parse(sessionStorage.getItem('usuarioLogado'));
+        if (!usuarioLogado || usuarioLogado.tipo !== 'funcionario') {
+            window.location.href = 'Login.html';
+        }
+
+        // Exibir dados do usuário
+        if (usuarioLogado && usuarioLogado.usuario) {
+            document.getElementById('nomeUsuario').textContent = usuarioLogado.usuario.nome;
+            document.getElementById('cargoUsuario').textContent = usuarioLogado.usuario.cargo || 'Funcionário';
+        }
+
+        // Carregar estatísticas
+        async function carregarEstatisticas() {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/estatisticas');
+                const data = await response.json();
+                
+                document.getElementById('totalClientes').textContent = data.total_clientes || 0;
+                document.getElementById('contasAtivas').textContent = data.contas_ativas || 0;
+                document.getElementById('transacoesHoje').textContent = data.transacoes_hoje || 0;
+            } catch (error) {
+                console.error('Erro ao carregar estatísticas:', error);
+            }
+        }
+
+        function logout() {
+            if (confirm('Deseja realmente sair?')) {
+                sessionStorage.removeItem('usuarioLogado');
+                window.location.href = 'Login.html';
+            }
+        }
+
+        // Carregar dados iniciais
+        carregarEstatisticas();
+    </script>
+</body>
+</html> 

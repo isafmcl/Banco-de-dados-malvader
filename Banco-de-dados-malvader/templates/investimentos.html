@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Investimentos - Banco Malvader</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #000B3A;
+    }
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .card-hover {
+      transition: transform 0.3s;
+    }
+    .card-hover:hover {
+      transform: translateY(-5px);
+    }
+  </style>
+</head>
+<body class="text-white min-h-screen">
+  <header class="bg-white py-4 px-6 mb-8 shadow-lg">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <img src="../assets/images/logo.png" alt="Logo malvader" class="h-12">
+      <div class="flex items-center space-x-6">
+        <div class="text-right">
+          <p class="text-sm text-gray-600">Bem-vindo(a),</p>
+          <p class="font-semibold text-gray-900" id="nomeUsuario">Carregando...</p>
+        </div>
+        <a href="painel_cliente.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+          <i class="fas fa-arrow-left mr-2"></i>Voltar
+        </a>
+        <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
+          <i class="fas fa-sign-out-alt mr-2"></i>Sair
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-8">
+      <div class="w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-chart-line text-2xl text-white"></i>
+      </div>
+      <h1 class="text-3xl font-bold mb-2">Investimentos</h1>
+      <p class="text-gray-300">Faça seu dinheiro trabalhar para você</p>
+    </div>
+
+    <!-- Resumo dos Investimentos -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="glass-effect rounded-xl p-6">
+        <p class="text-sm opacity-70 mb-1">Total Investido</p>
+        <p class="text-3xl font-bold text-yellow-400" id="totalInvestido">R$ 10.000,00</p>
+      </div>
+      <div class="glass-effect rounded-xl p-6">
+        <p class="text-sm opacity-70 mb-1">Rendimento do Mês</p>
+        <p class="text-3xl font-bold text-green-400" id="rendimentoMes">+ R$ 250,00</p>
+      </div>
+      <div class="glass-effect rounded-xl p-6">
+        <p class="text-sm opacity-70 mb-1">Rentabilidade</p>
+        <p class="text-3xl font-bold text-purple-400" id="rentabilidade">+ 2,5%</p>
+      </div>
+    </div>
+
+    <!-- Produtos de Investimento -->
+    <h2 class="text-2xl font-bold mb-6">Produtos Disponíveis</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <!-- Poupança -->
+      <div class="glass-effect rounded-xl p-6 card-hover">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xl font-semibold">Poupança</h3>
+          <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+            <i class="fas fa-piggy-bank text-xl"></i>
+          </div>
+        </div>
+        <p class="text-gray-300 text-sm mb-4">Baixo risco, liquidez diária</p>
+        <div class="space-y-2 mb-4">
+          <div class="flex justify-between">
+            <span class="text-sm text-gray-400">Rentabilidade:</span>
+            <span class="font-semibold text-green-400">0,5% a.m.</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-sm text-gray-400">Aplicação mínima:</span>
+            <span class="font-semibold">R$ 1,00</span>
+          </div>
+        </div>
+        <button onclick="abrirModal('poupanca')" class="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg transition-colors">
+          Investir
+        </button>
+      </div>
+
+      <!-- CDB -->
+      <div class="glass-effect rounded-xl p-6 card-hover">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xl font-semibold">CDB</h3>
+          <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+            <i class="fas fa-certificate text-xl"></i>
+          </div>
+        </div>
+        <p class="text-gray-300 text-sm mb-4">Médio risco, rentabilidade atrativa</p>
+        <div class="space-y-2 mb-4">
+          <div class="flex justify-between">
+            <span class="text-sm text-gray-400">Rentabilidade:</span>
+            <span class="font-semibold text-blue-400">120% CDI</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-sm text-gray-400">Aplicação mínima:</span>
+            <span class="font-semibold">R$ 1.000,00</span>
+          </div>
+        </div>
+        <button onclick="abrirModal('cdb')" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition-colors">
+          Investir
+        </button>
+      </div>
+
+      <!-- Fundos -->
+      <div class="glass-effect rounded-xl p-6 card-hover">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xl font-semibold">Fundos</h3>
+          <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
+            <i class="fas fa-chart-area text-xl"></i>
+          </div>
+        </div>
+        <p class="text-gray-300 text-sm mb-4">Diversificação e gestão profissional</p>
+        <div class="space-y-2 mb-4">
+          <div class="flex justify-between">
+            <span class="text-sm text-gray-400">Rentabilidade:</span>
+            <span class="font-semibold text-purple-400">Variável</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-sm text-gray-400">Aplicação mínima:</span>
+            <span class="font-semibold">R$ 500,00</span>
+          </div>
+        </div>
+        <button onclick="abrirModal('fundos')" class="w-full bg-purple-500 hover:bg-purple-600 text-white py-2 rounded-lg transition-colors">
+          Investir
+        </button>
+      </div>
+    </div>
+
+    <!-- Meus Investimentos -->
+    <h2 class="text-2xl font-bold mb-6">Meus Investimentos</h2>
+    <div class="glass-effect rounded-xl p-6">
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="border-b border-white/20">
+              <th class="text-left py-3">Produto</th>
+              <th class="text-left py-3">Valor Aplicado</th>
+              <th class="text-left py-3">Rendimento</th>
+              <th class="text-left py-3">Total</th>
+              <th class="text-left py-3">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaInvestimentos">
+            <tr class="border-b border-white/10">
+              <td class="py-3">
+                <div class="flex items-center">
+                  <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                    <i class="fas fa-piggy-bank text-sm"></i>
+                  </div>
+                  Poupança
+                </div>
+              </td>
+              <td class="py-3">R$ 5.000,00</td>
+              <td class="py-3 text-green-400">+ R$ 125,00</td>
+              <td class="py-3 font-semibold">R$ 5.125,00</td>
+              <td class="py-3">
+                <button class="text-red-400 hover:text-red-300 text-sm">Resgatar</button>
+              </td>
+            </tr>
+            <tr class="border-b border-white/10">
+              <td class="py-3">
+                <div class="flex items-center">
+                  <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mr-3">
+                    <i class="fas fa-certificate text-sm"></i>
+                  </div>
+                  CDB 12 meses
+                </div>
+              </td>
+              <td class="py-3">R$ 3.000,00</td>
+              <td class="py-3 text-green-400">+ R$ 180,00</td>
+              <td class="py-3 font-semibold">R$ 3.180,00</td>
+              <td class="py-3">
+                <span class="text-gray-400 text-sm">Venc: 12/12/2024</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal de Investimento -->
+  <div id="modalInvestimento" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="glass-effect rounded-xl p-6 max-w-md w-full mx-4">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-semibold" id="modalTitulo">Novo Investimento</h3>
+        <button onclick="fecharModal()" class="text-gray-400 hover:text-white">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <form id="formInvestimento" onsubmit="return realizarInvestimento(event)">
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-2">Valor a Investir</label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">R$</span>
+            <input 
+              type="number" 
+              id="valorInvestimento" 
+              step="0.01" 
+              min="1"
+              class="w-full pl-8 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500" 
+              placeholder="0,00" 
+              required
+            >
+          </div>
+          <p class="text-sm text-gray-400 mt-1" id="valorMinimo">Valor mínimo: R$ 1,00</p>
+        </div>
+
+        <div class="flex space-x-3">
+          <button type="button" onclick="fecharModal()" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-3 rounded-lg transition-colors">
+            Cancelar
+          </button>
+          <button type="submit" class="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg transition-colors">
+            Confirmar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script>
+    const CONFIG_INVESTIMENTOS = {
+      poupanca: { nome: 'Poupança', minimo: 1, texto: 'R$ 1,00' },
+      cdb: { nome: 'CDB', minimo: 1000, texto: 'R$ 1.000,00' },
+      fundos: { nome: 'Fundos de Investimento', minimo: 500, texto: 'R$ 500,00' }
+    };
+
+    let usuario = null;
+    let tipoInvestimento = '';
+
+    function carregarDadosUsuario() {
+      usuario = JSON.parse(localStorage.getItem('usuario'));
+      if (!usuario) {
+        alert('Sessão expirada. Faça login novamente.');
+        window.location.href = 'login.html';
+        return;
+      }
+      document.getElementById('nomeUsuario').textContent = usuario.nome;
+    }
+
+    function abrirModal(tipo) {
+      tipoInvestimento = tipo;
+      const config = CONFIG_INVESTIMENTOS[tipo];
+      const modal = document.getElementById('modalInvestimento');
+      
+      document.getElementById('modalTitulo').textContent = `Investir em ${config.nome}`;
+      document.getElementById('valorMinimo').textContent = `Valor mínimo: ${config.texto}`;
+      document.getElementById('valorInvestimento').min = config.minimo;
+      
+      modal.classList.replace('hidden', 'flex');
+    }
+
+    function fecharModal() {
+      document.getElementById('modalInvestimento').classList.replace('flex', 'hidden');
+      document.getElementById('formInvestimento').reset();
+    }
+
+    function realizarInvestimento(event) {
+      event.preventDefault();
+      const valor = parseFloat(document.getElementById('valorInvestimento').value);
+      
+      if (!valor || valor <= 0) {
+        alert('Por favor, insira um valor válido.');
+        return false;
+      }
+
+      alert(`Investimento de R$ ${valor.toFixed(2).replace('.', ',')} em ${tipoInvestimento} realizado com sucesso!`);
+      fecharModal();
+      return false;
+    }
+
+    window.addEventListener('load', carregarDadosUsuario);
+  </script>
+</body>
+</html> 

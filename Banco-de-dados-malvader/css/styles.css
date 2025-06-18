@@ -1,0 +1,169 @@
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #000B3A;
+}
+
+/* Estilos da logo aqui */
+.login-logo, .navbar-logo {
+    height: 4rem;
+    margin: 0 auto 1rem auto;
+}
+
+.navbar-logo {
+    height: 3rem;
+    margin: 0;
+}
+
+/* Estilos dos containers */
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-card {
+    max-width: 24rem;
+    width: 100%;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+}
+
+/* Estilos dos botões */
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-color: #2563eb;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8;
+}
+
+.btn-secondary {
+    background-color: #4b5563;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #374151;
+}
+
+/* Estilos dos formulários */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    display: block;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.25rem;
+    color: #111827;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+
+.forgot-password {
+    display: block;
+    text-align: center;
+    color: #2563eb;
+    text-decoration: none;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+
+.navbar {
+    background-color: white;
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+
+.hidden {
+    display: none;
+}
+
+/* Container principal */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+
+.card {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Botões */
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.btn-primary {
+    background-color: #1D4ED8;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #1E40AF;
+}
+
+/* Utilitários */
+.text-success {
+    color: #059669;
+}
+
+.text-danger {
+    color: #DC2626;
+}
+
+/* Navegação */
+.nav-link {
+    color: #4B5563;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    transition: background-color 0.2s;
+}
+
+.nav-link:hover {
+    background-color: #F3F4F6;
+}
+
+.nav-link.active {
+    background-color: #E5E7EB;
+    color: #1F2937;
+}

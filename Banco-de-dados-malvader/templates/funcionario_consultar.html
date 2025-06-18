@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Consultar Clientes - Banco Malvader</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #000B3A;
+    }
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body class="text-white">
+  <header class="bg-white py-4 px-6 mb-8 shadow-lg">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <div class="flex items-center space-x-4">
+        <a href="painel_funcionario.html" class="text-gray-600 hover:text-gray-800">
+          <i class="fas fa-arrow-left"></i> Voltar ao Painel
+        </a>
+        <img src="../assets/images/logo.png" alt="Logo malvader" class="h-12">
+      </div>
+      <div class="flex items-center space-x-6">
+        <div class="text-right">
+          <p class="text-sm text-gray-600">Funcionário</p>
+          <p class="font-semibold text-gray-900" id="nomeFuncionario">Carregando...</p>
+          <p class="text-xs text-gray-500" id="cargoFuncionario">Cargo...</p>
+        </div>
+        <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
+          <i class="fas fa-sign-out-alt mr-2"></i>Sair
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6">
+    <div class="glass-effect rounded-xl p-8">
+      <h2 class="text-2xl font-bold mb-6">Consultar Clientes</h2>
+      
+      <div class="mb-8">
+        <form id="pesquisaForm" class="flex gap-4">
+          <div class="flex-1">
+            <input type="text" id="termoPesquisa" placeholder="Buscar por nome, CPF ou número da conta..." 
+              class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-blue-500 focus:outline-none">
+          </div>
+          <button type="submit" class="px-6 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 transition-colors">
+            <i class="fas fa-search mr-2"></i>Buscar
+          </button>
+        </form>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="text-left border-b border-white/10">
+              <th class="pb-3 px-4">Nome</th>
+              <th class="pb-3 px-4">CPF</th>
+              <th class="pb-3 px-4">Nº Conta</th>
+              <th class="pb-3 px-4">Saldo</th>
+              <th class="pb-3 px-4">Status</th>
+              <th class="pb-3 px-4">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaClientes">
+            <!-- Os dados serão inseridos aqui via JavaScript -->
+          </tbody>
+        </table>
+
+        <div id="semResultados" class="hidden text-center py-8 text-gray-400">
+          <i class="fas fa-search mb-2 text-2xl"></i>
+          <p>Nenhum cliente encontrado</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Detalhes -->
+    <div id="modalDetalhes" class="fixed inset-0 bg-black/50 hidden items-center justify-center">
+      <div class="glass-effect rounded-xl p-8 max-w-2xl w-full mx-4">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-xl font-bold">Detalhes do Cliente</h3>
+          <button onclick="fecharModal()" class="text-gray-400 hover:text-white">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <p class="text-sm opacity-70">Nome Completo</p>
+            <p class="font-medium" id="modalNome">-</p>
+          </div>
+          <div>
+            <p class="text-sm opacity-70">CPF</p>
+            <p class="font-medium" id="modalCpf">-</p>
+          </div>
+          <div>
+            <p class="text-sm opacity-70">Email</p>
+            <p class="font-medium" id="modalEmail">-</p>
+          </div>
+          <div>
+            <p class="text-sm opacity-70">Telefone</p>
+            <p class="font-medium" id="modalTelefone">-</p>
+          </div>
+          <div>
+            <p class="text-sm opacity-70">Data de Nascimento</p>
+            <p class="font-medium" id="modalDataNascimento">-</p>
+          </div>
+          <div>
+            <p class="text-sm opacity-70">Renda Mensal</p>
+            <p class="font-medium" id="modalRenda">-</p>
+          </div>
+          <div>
+            <p class="text-sm opacity-70">Número da Conta</p>
+            <p class="font-medium" id="modalNumeroConta">-</p>
+          </div>
+          <div>
+            <p class="text-sm opacity-70">Saldo Atual</p>
+            <p class="font-medium" id="modalSaldo">-</p>
+          </div>
+          <div>
+            <p class="text-sm opacity-70">Data de Abertura</p>
+            <p class="font-medium" id="modalDataAbertura">-</p>
+          </div>
+          <div>
+            <p class="text-sm opacity-70">Status da Conta</p>
+            <p class="font-medium" id="modalStatus">-</p>
+          </div>
+        </div>
+
+        <div class="flex justify-end mt-6">
+          <button onclick="fecharModal()" class="px-6 py-2 rounded-lg border border-white/20 hover:bg-white/10 transition-colors">
+            Fechar
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Carregar dados do funcionário logado
+      const funcionarioData = JSON.parse(localStorage.getItem('funcionarioData'));
+      if (funcionarioData) {
+        document.getElementById('nomeFuncionario').textContent = funcionarioData.nome;
+        document.getElementById('cargoFuncionario').textContent = funcionarioData.cargo;
+      }
+
+      // Verificar se há CPF na URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const cpf = urlParams.get('cpf');
+      if (cpf) {
+        await buscarCliente(cpf);
+      }
+    });
+
+    // Form de pesquisa
+    document.getElementById('pesquisaForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const termo = document.getElementById('termoPesquisa').value;
+      if (termo.length < 3) {
+        alert('Digite pelo menos 3 caracteres para pesquisar');
+        return;
+      }
+      await buscarCliente(termo);
+    });
+
+    async function buscarCliente(cpf) {
+      try {
+        const response = await fetch(`/consultar-cliente/${cpf}`);
+        if (!response.ok) throw new Error('Cliente não encontrado');
+        
+        const cliente = await response.json();
+        exibirDados([cliente]); // Passar como array para manter compatibilidade
+      } catch (error) {
+        console.error('Erro:', error);
+        document.getElementById('semResultados').classList.remove('hidden');
+        document.getElementById('tabelaClientes').innerHTML = '';
+      }
+    }
+
+    function exibirDados(clientes) {
+      const tbody = document.getElementById('tabelaClientes');
+      const semResultados = document.getElementById('semResultados');
+      
+      tbody.innerHTML = '';
+      
+      if (!clientes || clientes.length === 0) {
+        semResultados.classList.remove('hidden');
+        return;
+      }
+      
+      semResultados.classList.add('hidden');
+      
+      clientes.forEach(cliente => {
+        const tr = document.createElement('tr');
+        tr.className = 'border-b border-white/10 hover:bg-white/5';
+        tr.innerHTML = `
+          <td class="py-3 px-4">${cliente.nome}</td>
+          <td class="py-3 px-4">${formatarCPF(cliente.cpf)}</td>
+          <td class="py-3 px-4">${cliente.numero_conta}</td>
+          <td class="py-3 px-4">${formatarMoeda(cliente.saldo)}</td>
+          <td class="py-3 px-4">
+            <span class="px-2 py-1 rounded-full text-xs ${getStatusClass(cliente.status)}">
+              ${cliente.status}
+            </span>
+          </td>
+          <td class="py-3 px-4">
+            <button onclick='verDetalhes(${JSON.stringify(cliente)})' 
+              class="text-blue-400 hover:text-blue-300 mr-2" title="Ver detalhes">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button onclick='verTransacoes("${cliente.numero_conta}")' 
+              class="text-green-400 hover:text-green-300" title="Ver transações">
+              <i class="fas fa-exchange-alt"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function verTransacoes(numeroConta) {
+      window.location.href = `funcionario_transacoes.html?conta=${numeroConta}`;
+    }
+
+    function formatarMoeda(valor) {
+      return valor.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      });
+    }
+
+    function formatarCPF(cpf) {
+      return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    }
+
+    function getStatusClass(status) {
+      switch (status.toUpperCase()) {
+        case 'ATIVA':
+          return 'bg-green-500/20 text-green-400';
+        case 'INATIVA':
+        case 'BLOQUEADA':
+          return 'bg-red-500/20 text-red-400';
+        case 'PENDENTE':
+          return 'bg-yellow-500/20 text-yellow-400';
+        default:
+          return 'bg-gray-500/20 text-gray-400';
+      }
+    }
+
+    // Funções do modal
+    function verDetalhes(cliente) {
+      document.getElementById('modalNome').textContent = cliente.nome;
+      document.getElementById('modalCpf').textContent = cliente.cpf;
+      document.getElementById('modalEmail').textContent = cliente.email;
+      document.getElementById('modalTelefone').textContent = cliente.telefone;
+      document.getElementById('modalDataNascimento').textContent = new Date(cliente.data_nascimento).toLocaleDateString('pt-BR');
+      document.getElementById('modalRenda').textContent = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cliente.renda);
+      document.getElementById('modalNumeroConta').textContent = cliente.numero_conta;
+      document.getElementById('modalSaldo').textContent = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cliente.saldo);
+      document.getElementById('modalDataAbertura').textContent = new Date(cliente.data_abertura).toLocaleDateString('pt-BR');
+      document.getElementById('modalStatus').textContent = cliente.status;
+
+      document.getElementById('modalDetalhes').classList.remove('hidden');
+      document.getElementById('modalDetalhes').classList.add('flex');
+    }
+
+    function fecharModal() {
+      document.getElementById('modalDetalhes').classList.add('hidden');
+      document.getElementById('modalDetalhes').classList.remove('flex');
+    }
+
+    // Fechar modal ao clicar fora dele
+    document.getElementById('modalDetalhes').addEventListener('click', function(e) {
+      if (e.target === this) {
+        fecharModal();
+      }
+    });
+  </script>
+</body>
+</html>

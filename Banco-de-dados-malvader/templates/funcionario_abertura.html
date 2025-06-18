@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Abertura de Conta - Banco Malvader</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #000B3A;
+    }
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body class="text-white">
+  <header class="bg-white py-4 px-6 mb-8 shadow-lg">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <div class="flex items-center space-x-4">
+        <a href="painel_funcionario.html" class="text-gray-600 hover:text-gray-800">
+          <i class="fas fa-arrow-left"></i> Voltar ao Painel
+        </a>
+        <img src="../assets/images/logo.png" alt="Logo malvader" class="h-12">
+      </div>
+      <div class="flex items-center space-x-6">
+        <div class="text-right">
+          <p class="text-sm text-gray-600">Funcionário</p>
+          <p class="font-semibold text-gray-900" id="nomeFuncionario">Carregando...</p>
+          <p class="text-xs text-gray-500" id="cargoFuncionario">Cargo...</p>
+        </div>
+        <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
+          <i class="fas fa-sign-out-alt mr-2"></i>Sair
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-6">
+    <div class="glass-effect rounded-xl p-8">
+      <h2 class="text-2xl font-bold mb-6">Abertura de Conta</h2>
+      
+      <form id="aberturaForm" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium mb-2" for="nome">Nome Completo</label>
+            <input type="text" id="nome" name="nome" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-blue-500 focus:outline-none" required>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium mb-2" for="cpf">CPF</label>
+            <input type="text" id="cpf" name="cpf" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-blue-500 focus:outline-none" required>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2" for="email">Email</label>
+            <input type="email" id="email" name="email" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-blue-500 focus:outline-none" required>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2" for="telefone">Telefone</label>
+            <input type="tel" id="telefone" name="telefone" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-blue-500 focus:outline-none" required>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2" for="dataNascimento">Data de Nascimento</label>
+            <input type="date" id="dataNascimento" name="dataNascimento" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-blue-500 focus:outline-none" required>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2" for="renda">Renda Mensal</label>
+            <input type="number" id="renda" name="renda" step="0.01" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-blue-500 focus:outline-none" required>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2" for="senha">Senha</label>
+            <input type="password" id="senha" name="senha" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-blue-500 focus:outline-none" required>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2" for="confirmarSenha">Confirmar Senha</label>
+            <input type="password" id="confirmarSenha" name="confirmarSenha" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 focus:border-blue-500 focus:outline-none" required>
+          </div>
+        </div>
+
+        <div class="flex justify-end space-x-4">
+          <button type="button" onclick="window.location.href='painel_funcionario.html'" class="px-6 py-2 rounded-lg border border-white/20 hover:bg-white/10 transition-colors">
+            Cancelar
+          </button>
+          <button type="submit" class="px-6 py-2 rounded-lg bg-green-500 hover:bg-green-600 transition-colors">
+            Criar Conta
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('aberturaForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      // Validar senhas
+      if (document.getElementById('senha').value !== document.getElementById('confirmarSenha').value) {
+        alert('As senhas não coincidem!');
+        return;
+      }
+
+      const formData = {
+        nome: document.getElementById('nome').value,
+        cpf: document.getElementById('cpf').value,
+        email: document.getElementById('email').value,
+        telefone: document.getElementById('telefone').value,
+        dataNascimento: document.getElementById('dataNascimento').value,
+        renda: document.getElementById('renda').value,
+        senha: document.getElementById('senha').value
+      };
+
+      try {
+        const response = await fetch('http://127.0.0.1:5000/criar_conta', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          alert('Conta criada com sucesso!');
+          window.location.href = 'painel_funcionario.html';
+        } else {
+          alert(data.message || 'Erro ao criar conta');
+        }
+      } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao conectar com o servidor');
+      }
+    });
+
+    // Carregar dados do funcionário logado
+    window.addEventListener('load', function() {
+      const usuario = JSON.parse(localStorage.getItem('usuario'));
+      if (usuario) {
+        document.getElementById('nomeFuncionario').textContent = usuario.nome;
+        document.getElementById('cargoFuncionario').textContent = usuario.cargo || 'Funcionário';
+      } else {
+        window.location.href = 'login.html';
+      }
+    });
+  </script>
+</body>
+</html>

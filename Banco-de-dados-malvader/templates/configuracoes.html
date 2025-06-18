@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configurações - Banco Malvader</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #000B3A;
+    }
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body class="text-white min-h-screen">
+  <header class="bg-white py-4 px-6 mb-8 shadow-lg">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <img src="../assets/images/logo.png" alt="Logo malvader" class="h-12">
+      <div class="flex items-center space-x-6">
+        <div class="text-right">
+          <p class="text-sm text-gray-600">Bem-vindo(a),</p>
+          <p class="font-semibold text-gray-900" id="nomeUsuario">Carregando...</p>
+        </div>
+        <a href="../templates/painel_cliente.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+          <i class="fas fa-arrow-left mr-2"></i>Voltar
+        </a>
+        <a href="../templates/Login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
+          <i class="fas fa-sign-out-alt mr-2"></i>Sair
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-6">
+    <div class="text-center mb-8">
+      <div class="w-16 h-16 bg-gray-500 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-cog text-2xl text-white"></i>
+      </div>
+      <h1 class="text-3xl font-bold mb-2">Configurações</h1>
+      <p class="text-gray-300">Gerencie suas preferências e dados da conta</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Dados Pessoais -->
+      <div class="glass-effect rounded-xl p-6">
+        <h3 class="text-xl font-semibold mb-4 flex items-center">
+          <i class="fas fa-user mr-3 text-blue-400"></i>
+          Dados Pessoais
+        </h3>
+        <form id="formDadosPessoais" onsubmit="return atualizarDados(event)">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-2">Nome Completo</label>
+              <input 
+                type="text" 
+                id="nome" 
+                class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                placeholder="Seu nome completo"
+                required
+              >
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">CPF</label>
+              <input 
+                type="text" 
+                id="cpf" 
+                class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-gray-400" 
+                readonly
+              >
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">Telefone</label>
+              <input 
+                type="tel" 
+                id="telefone" 
+                class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                placeholder="(11) 99999-9999"
+              >
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">E-mail</label>
+              <input 
+                type="email" 
+                id="email" 
+                class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                placeholder="seu@email.com"
+              >
+            </div>
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg transition-colors font-semibold">
+              <i class="fas fa-save mr-2"></i>Salvar Alterações
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Segurança -->
+      <div class="glass-effect rounded-xl p-6">
+        <h3 class="text-xl font-semibold mb-4 flex items-center">
+          <i class="fas fa-shield-alt mr-3 text-green-400"></i>
+          Segurança
+        </h3>
+        <form id="formSeguranca" onsubmit="return alterarSenha(event)">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-2">Senha Atual</label>
+              <input 
+                type="password" 
+                id="senhaAtual" 
+                class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500" 
+                placeholder="Digite sua senha atual"
+                required
+              >
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">Nova Senha</label>
+              <input 
+                type="password" 
+                id="novaSenha" 
+                class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500" 
+                placeholder="Digite a nova senha"
+                required
+              >
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">Confirmar Nova Senha</label>
+              <input 
+                type="password" 
+                id="confirmarSenha" 
+                class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500" 
+                placeholder="Confirme a nova senha"
+                required
+              >
+            </div>
+            <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg transition-colors font-semibold">
+              <i class="fas fa-key mr-2"></i>Alterar Senha
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Preferências -->
+    <div class="glass-effect rounded-xl p-6 mt-8">
+      <h3 class="text-xl font-semibold mb-4 flex items-center">
+        <i class="fas fa-sliders-h mr-3 text-purple-400"></i>
+        Preferências
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h4 class="font-medium">Notificações por E-mail</h4>
+              <p class="text-sm text-gray-400">Receber notificações de transações</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="notifEmail" class="sr-only peer">
+              <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+          
+          <div class="flex items-center justify-between">
+            <div>
+              <h4 class="font-medium">Notificações por SMS</h4>
+              <p class="text-sm text-gray-400">Receber SMS para transações</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="notifSMS" class="sr-only peer">
+              <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h4 class="font-medium">Bloqueio de Cartão</h4>
+              <p class="text-sm text-gray-400">Cartão temporariamente bloqueado</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="bloqueioCartao" class="sr-only peer">
+              <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
+            </label>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <div>
+              <h4 class="font-medium">Limite de Transferência</h4>
+              <p class="text-sm text-gray-400">Atual: R$ 5.000,00</p>
+            </div>
+            <button onclick="abrirModalLimite()" class="text-purple-400 hover:text-purple-300 text-sm">
+              Alterar
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-6">
+        <button onclick="salvarPreferencias()" class="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg transition-colors font-semibold">
+          <i class="fas fa-save mr-2"></i>Salvar Preferências
+        </button>
+      </div>
+    </div>
+
+    <!-- Informações da Conta -->
+    <div class="glass-effect rounded-xl p-6 mt-8">
+      <h3 class="text-xl font-semibold mb-4 flex items-center">
+        <i class="fas fa-info-circle mr-3 text-yellow-400"></i>
+        Informações da Conta
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-3">
+          <div class="flex justify-between">
+            <span class="text-gray-300">Número da Conta:</span>
+            <span class="font-semibold" id="numeroConta">Carregando...</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-300">Tipo de Conta:</span>
+            <span class="font-semibold">Conta Corrente</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-300">Status:</span>
+            <span class="font-semibold text-green-400">Ativa</span>
+          </div>
+        </div>
+        <div class="space-y-3">
+          <div class="flex justify-between">
+            <span class="text-gray-300">Data de Abertura:</span>
+            <span class="font-semibold">01/01/2024</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-300">Score de Crédito:</span>
+            <span class="font-semibold text-blue-400">750 pontos</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-300">Gerente:</span>
+            <span class="font-semibold">Isabelle Maciel</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal Limite -->
+  <div id="modalLimite" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="glass-effect rounded-xl p-6 max-w-md w-full mx-4">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-semibold">Alterar Limite de Transferência</h3>
+        <button onclick="fecharModalLimite()" class="text-gray-400 hover:text-white">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <form id="formLimite" onsubmit="return alterarLimite(event)">
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-2">Novo Limite Diário</label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">R$</span>
+            <input 
+              type="number" 
+              id="novoLimite" 
+              step="0.01" 
+              min="100"
+              max="50000"
+              class="w-full pl-8 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500" 
+              placeholder="5000,00" 
+              required
+            >
+          </div>
+          <p class="text-sm text-gray-400 mt-1">Limite entre R$ 100,00 e R$ 50.000,00</p>
+        </div>
+
+        <div class="flex space-x-3">
+          <button type="button" onclick="fecharModalLimite()" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-3 rounded-lg transition-colors">
+            Cancelar
+          </button>
+          <button type="submit" class="flex-1 bg-purple-500 hover:bg-purple-600 text-white py-3 rounded-lg transition-colors">
+            Confirmar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let usuario = null;
+
+    async function carregarDadosUsuario() {
+      usuario = JSON.parse(localStorage.getItem('usuario'));
+      
+      if (!usuario) {
+        alert('Sessão expirada. Faça login novamente.');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      // Atualiza informações do usuário
+      document.getElementById('nomeUsuario').textContent = usuario.nome;
+      document.getElementById('nome').value = usuario.nome;
+      document.getElementById('cpf').value = usuario.cpf;
+      document.getElementById('numeroConta').textContent = usuario.numero_conta;
+      
+      // Carrega preferências salvas
+      carregarPreferencias();
+    }
+
+    function carregarPreferencias() {
+      const prefs = JSON.parse(localStorage.getItem('preferencias')) || {};
+      
+      document.getElementById('notifEmail').checked = prefs.notifEmail || false;
+      document.getElementById('notifSMS').checked = prefs.notifSMS || false;
+      document.getElementById('bloqueioCartao').checked = prefs.bloqueioCartao || false;
+    }
+
+    function salvarPreferencias() {
+      const preferencias = {
+        notifEmail: document.getElementById('notifEmail').checked,
+        notifSMS: document.getElementById('notifSMS').checked,
+        bloqueioCartao: document.getElementById('bloqueioCartao').checked
+      };
+      
+      localStorage.setItem('preferencias', JSON.stringify(preferencias));
+      alert('Preferências salvas com sucesso!');
+    }
+
+    function atualizarDados(event) {
+      event.preventDefault();
+      
+      // Simulação de atualização de dados
+      alert('Dados atualizados com sucesso!');
+      return false;
+    }
+
+    function alterarSenha(event) {
+      event.preventDefault();
+      
+      const novaSenha = document.getElementById('novaSenha').value;
+      const confirmarSenha = document.getElementById('confirmarSenha').value;
+      
+      if (novaSenha !== confirmarSenha) {
+        alert('As senhas não coincidem.');
+        return false;
+      }
+      
+      if (novaSenha.length < 6) {
+        alert('A senha deve ter pelo menos 6 caracteres.');
+        return false;
+      }
+      
+      // Simulação de alteração de senha
+      alert('Senha alterada com sucesso!');
+      document.getElementById('formSeguranca').reset();
+      return false;
+    }
+
+    function abrirModalLimite() {
+      const modal = document.getElementById('modalLimite');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function fecharModalLimite() {
+      const modal = document.getElementById('modalLimite');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.getElementById('formLimite').reset();
+    }
+
+    function alterarLimite(event) {
+      event.preventDefault();
+      
+      const novoLimite = parseFloat(document.getElementById('novoLimite').value);
+      
+      if (novoLimite < 100 || novoLimite > 50000) {
+        alert('Limite deve estar entre R$ 100,00 e R$ 50.000,00');
+        return false;
+      }
+      
+      // Simulação de alteração de limite
+      alert(`Limite alterado para R$ ${novoLimite.toFixed(2).replace('.', ',')} com sucesso!`);
+      fecharModalLimite();
+      return false;
+    }
+
+    // Carrega dados quando a página abre
+    window.addEventListener('load', carregarDadosUsuario);
+  </script>
+</body>
+</html>
